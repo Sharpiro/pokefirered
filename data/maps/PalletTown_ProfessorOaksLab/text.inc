@@ -113,10 +113,16 @@ PalletTown_ProfessorOaksLab_Text_OakChoosingSquirtle::
     .string "WATER POKéMON SQUIRTLE?$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingBulbasaur::
-    .string "I see! GASTLY is your choice.\n"
+    .string "I see! BULBASAUR is your choice.\n"
     .string "It's very easy to raise.\p"
     .string "So, {PLAYER}, you want to go with\n"
-    .string "the POKéMON GASTLY?$"
+    .string "the POKéMON BULBASAUR?$"
+
+PalletTown_ProfessorOaksLab_Text_OakChoosingPokemon::
+    .string "I see! {STR_VAR_1} is your choice.\n"
+    .string "A solid contender.\p"
+    .string "So, {PLAYER}, you want to go with\n"
+    .string "the POKéMON {STR_VAR_1}?$"
 
 PalletTown_ProfessorOaksLab_Text_OakThisMonIsEnergetic::
     .string "This POKéMON is really quite\n"
