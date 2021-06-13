@@ -457,7 +457,7 @@ void TryStartQuestLogPlayback(u8 taskId)
             sNumScenes++;
     }
 
-    if (sNumScenes != 0)
+    if (SHOW_PREVIOUS_QUEST_LOG && sNumScenes != 0)
     {
         gHelpSystemEnabled = FALSE;
         Task_BeginQuestLogPlayback(taskId);
