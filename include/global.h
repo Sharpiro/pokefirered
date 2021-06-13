@@ -511,6 +511,7 @@ struct Mail
     /*0x1A*/ u8 trainerId[TRAINER_ID_LENGTH];
     /*0x1E*/ u16 species;
     /*0x20*/ u16 itemId;
+    /*0x22*/ u8 filler[2];
 };
 
 struct DayCareMail
@@ -589,6 +590,7 @@ struct QuestLogObjectEvent
     /*0x0f*/ u8 previousMetatileBehavior;
     /*0x10*/ u8 directionSequenceIndex;
     /*0x11*/ u8 animId;
+    /*0x12*/ u8 filler[2];
 };
 
 struct QuestLog
@@ -616,7 +618,7 @@ struct FameCheckerSaveData
 {
     /*3a54*/ u16 pickState:2;
     u16 flavorTextFlags:12;
-    u16 unk_0_E:2;
+     u8 unk_0_E:2;
 };
 
 struct WonderNewsMetadata
@@ -696,7 +698,7 @@ struct TrainerNameRecord
 
 // For external event data storage. The majority of these may have never been used.
 // In FRLG, the only known used fields are the PokeCoupon and BoxRS ones, but hacking the distribution discs allows FRLG to receive events and set the others
-struct ExternalEventData
+struct __attribute__((packed)) ExternalEventData
 {
     u8 unknownExternalDataFields1[7]; // if actually used, may be broken up into different fields.
     u32 unknownExternalDataFields2:8;
@@ -708,7 +710,7 @@ struct ExternalEventData
     u32 unknownExternalDataFields3:4;
     u32 totalEarnedPokeCoupons:24; // Used by the JP Colosseum bonus disc. Determines PokéCoupon rank to distribute rewards. Unread in International games. Colosseum/XD caps this at 9,999,999.
     u8 unknownExternalDataFields4[5]; // if actually used, may be broken up into different fields.
-} __attribute__((packed)); /*size = 0x14*/
+}; /*size = 0x14*/
 
 // For external event flags. The majority of these may have never been used.
 // In FRLG, Jirachi cannot normally be received, but hacking the distribution discs allows FRLG to receive Jirachi and set the flag
