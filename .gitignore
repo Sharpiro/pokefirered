@@ -58,6 +58,5 @@ types_*.taghl
 _Deparsed_XSubs.pm
 porymap.*.cfg
 prefabs.json
-.vscode/*.*
 *.js
 *.sym

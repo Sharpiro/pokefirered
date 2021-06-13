@@ -1,0 +1,21 @@
+{
+  "files.associations": {
+    "quest_log_player.h": "c",
+    "field_screen_effect.h": "c",
+    "*.tcc": "cpp",
+    "map": "cpp",
+    "maps.h": "c",
+    "random": "c",
+    "global.h": "c",
+    "map_groups.h": "c",
+    "map_types.h": "c",
+    "quest_log.h": "c",
+    "overworld.h": "c",
+    "roamer.h": "c",
+    "species.h": "c"
+},
+  "cSpell.diagnosticLevel": "Hint",
+  "C_Cpp.default.compilerArgs": ["-m32"],
+  "editor.formatOnSaveMode": "modifications",
+  "editor.tabSize": 4
+}
