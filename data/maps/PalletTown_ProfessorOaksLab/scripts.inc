@@ -1180,7 +1180,8 @@ PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice:: @ 8169BE1
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_ConfirmBulbasaur:: @ 8169C14
-	msgbox PalletTown_ProfessorOaksLab_Text_OakChoosingBulbasaur, MSGBOX_YESNO
+	getspeciesname 0, PLAYER_STARTER_SPECIES
+	msgbox PalletTown_ProfessorOaksLab_Text_OakChoosingPokemon, MSGBOX_YESNO
 	compare VAR_RESULT, YES
 	goto_if_eq PalletTown_ProfessorOaksLab_EventScript_ChoseStarter
 	compare VAR_RESULT, NO
