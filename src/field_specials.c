@@ -1517,8 +1517,7 @@ void ForcePlayerToStartSurfing(void)
 }
 
 static const u16 sStarterSpecies[] = {
-    SPECIES_GASTLY,
-    // SPECIES_BULBASAUR,
+    SPECIES_BULBASAUR,
     SPECIES_SQUIRTLE,
     SPECIES_CHARMANDER
 };
@@ -2549,4 +2548,19 @@ static void Task_WingFlapSound(u8 taskId)
     }
     if (data[0] == gSpecialVar_0x8004 - 1)
         DestroyTask(taskId);
+}
+
+u16 GetRandomStarter(struct ScriptContext * ctx)
+{
+    #define STARTERS_SIZE 4
+    u16 starters[STARTERS_SIZE] =
+    {
+      SPECIES_BULBASAUR,
+      SPECIES_GASTLY,
+      SPECIES_ABRA,
+      SPECIES_LARVITAR,
+    };
+    u16 randomIndex = Random() % STARTERS_SIZE;
+    u16 randomStarter = starters[randomIndex];
+    return randomStarter;
 }

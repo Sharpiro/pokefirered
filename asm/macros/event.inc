@@ -285,6 +285,11 @@
 	.2byte \a
 	.endm
 
+	@ Does nothing
+	@.macro noop
+	@.byte 0xd5
+	@.endm
+
 	@ Compares a to 1.
 	.macro checkflag a:req
 	.byte 0x2b
