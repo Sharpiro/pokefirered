@@ -72,7 +72,7 @@ PokemonLeague_ChampionsRoom_Text_OakCongratulations:: @ 8178FCF
     .string "You're the new POKéMON LEAGUE\n"
     .string "CHAMPION!\p"
     .string "You've grown up so much since you\n"
-    .string "first left with {STR_VAR_1} to work\l"
+    .string "first left with your little POKé pal to work\l"
     .string "on the POKéDEX.\p"
     .string "{PLAYER}, you have come of age!$"
 
