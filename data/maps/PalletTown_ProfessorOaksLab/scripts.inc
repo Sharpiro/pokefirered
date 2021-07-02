@@ -521,7 +521,7 @@ PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle:: @ 81694C2
 	fadedefaultbgm
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 4
 	setflag FLAG_BEAT_RIVAL_IN_OAKS_LAB
-	releaseall
+  goto PalletTown_Release_Dogs
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_RivalExitAfterBattleLeft:: @ 8169504
@@ -1404,5 +1404,23 @@ PalletTown_ProfessorOaksLab_EventScript_RightSign:: @ 8169E7A
 
 PalletTown_ProfessorOaksLab_EventScript_RightSignAlt:: @ 8169E90
 	msgbox PalletTown_ProfessorOaksLab_Text_AllMonTypesHaveStrongAndWeakPoints
+	releaseall
+	end
+
+@ inline this somehow?
+PalletTown_Movement_Release_Dogs::
+	walk_down
+	step_end
+
+PalletTown_Release_Dogs::
+	delay 60
+  applymovement OBJ_EVENT_ID_PLAYER, PalletTown_Movement_Release_Dogs
+	waitmovement 0
+	shakescreen
+	delay 30
+	playmoncry SPECIES_RAIKOU, 0
+	delay 30
+	special InitRoamer
+	msgbox PalletTown_Release_Dogs_Text
 	releaseall
 	end
