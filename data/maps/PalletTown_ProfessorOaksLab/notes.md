@@ -30,6 +30,8 @@
   - asm/macros/event.inc
   - script_cmd_table.inc
   - src/scrcmd.c
+- roaming pokemon
+  - src/roamer.c
 
 ## scripting
 
@@ -42,9 +44,21 @@
 - clearflag var
   - set variable to false
 
+## text
+
+- `\p` creates a whole new text window
+- `\n` creates a new line within an existing text window
+
 ## todo
 
+- L2 view temp vars in memory
 - gary should choose random
 - release all 3 dogs as roamers
 - release all 3 fr/lg starters as roamers
 - release all 3 g/s/c starters as roamers
+- remove time played
+- add raikou's current location to a sign
+
+## questions
+
+- how can important data be saved in temporary flags?

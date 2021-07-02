@@ -361,3 +361,7 @@ PalletTown_ProfessorOaksLab_Text_RivalIllCompleteThePokedex:: @ 818F1DB
     .string "ONE ISLAND first…\p"
     .string "Anyways, I'm outta here!$"
 
+PalletTown_Release_Dogs_Text:: @ 818F1DB
+    .string "You saw a glimpse of\n"
+    .string "powerful monsters being\p"
+    .string "released…$"
