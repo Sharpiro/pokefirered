@@ -1133,7 +1133,7 @@
 	.byte 0xa0
 	.endm
 
-	@ Plays the specified (species) Pokemon's cry. You can use waitcry to block script execution until the sound finishes.
+	@ Plays the specified (species) Pokemon's cry. You can use waitmoncry to block script execution until the sound finishes.
 	.macro playmoncry species:req, effect:req
 	.byte 0xa1
 	.2byte \species
@@ -1647,4 +1647,12 @@
 	braillemessage \text
 	getbraillestringwidth \text
 	call EventScript_BrailleCursorWaitButton
+	.endm
+
+	.macro shakescreen
+	setvar VAR_0x8004, 1
+	setvar VAR_0x8005, 1
+	setvar VAR_0x8006, 8
+	setvar VAR_0x8007, 5
+  special ShakeScreen
 	.endm

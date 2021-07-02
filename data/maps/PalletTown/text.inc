@@ -21,7 +21,8 @@ PalletTown_Text_CanStoreItemsAndMonsInPC:: @ 817D80D
     .string "and POKéMON as data via PC.$"
 
 PalletTown_Text_OakPokemonResearchLab:: @ 817D866
-    .string "OAK POKéMON RESEARCH LAB$"
+    @.string "OAK POKéMON RESEARCH LAB$"
+    .string "VAR TEMP 2: {STR_VAR_1}$"
 
 PalletTown_Text_PlayersHouse:: @ 817D87F
     .string "{PLAYER}'s house$"
@@ -64,4 +65,3 @@ PalletTown_Text_OakYouEnjoyingTraveling:: @ 817DA16
     .string "exotic locales.\p"
     .string "Good for you, good for you.\n"
     .string "Hohoho.$"
-
