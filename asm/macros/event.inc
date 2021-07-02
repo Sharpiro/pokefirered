@@ -1869,3 +1869,11 @@
 	.byte 0xd5
 	.2byte \value
 	.endm
+
+	.macro shakescreen
+	setvar VAR_0x8004, 1
+	setvar VAR_0x8005, 1
+	setvar VAR_0x8006, 8
+	setvar VAR_0x8007, 5
+  special ShakeScreen
+	.endm
