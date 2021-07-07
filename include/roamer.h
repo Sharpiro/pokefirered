@@ -6,9 +6,9 @@
 void ClearRoamerData(void);
 void ClearRoamerLocationData(void);
 void InitRoamer(void);
-void UpdateLocationHistoryForRoamer(void);
-void RoamerMoveToOtherLocationSet(void);
-void RoamerMove(void);
+void UpdateRoamerHistories();
+void MoveRoamersToOtherLocationSet();
+void MoveRoamers();
 void CreateRoamerMonInstance(void);
 u8 TryStartRoamerEncounter(void);
 void UpdateRoamerHPStatus(struct Pokemon *mon);
