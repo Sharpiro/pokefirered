@@ -234,7 +234,7 @@ bool8 TryStartRoamerEncounter(void)
 {
     struct Roamer *randomRoamer = get_random_roamer();
     // if (IsRoamerAt(randomRoamer, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE)
-    if (IsRoamerAt(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE && (Random() % 4) == 0)
+    if (IsRoamerAt(randomRoamer, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE && (Random() % 4) == 0)
     {
         CreateRoamerMonInstance(randomRoamer);
         return TRUE;
