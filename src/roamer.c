@@ -73,22 +73,24 @@ void ClearRoamerData(void)
     }
 }
 
-#define GetRoamerSpecies() ({\
-    u16 a;\
-    switch (GetStarterSpecies())\
-    {\
-    default:\
-        a = SPECIES_RAIKOU;\
-        break;\
-    case SPECIES_BULBASAUR:\
-        a = SPECIES_ENTEI;\
-        break;\
-    case SPECIES_CHARMANDER:\
-        a = SPECIES_SUICUNE;\
-        break;\
-    }\
-    a;\
-})
+
+// todo: fix roamer
+// #define GetRoamerSpecies() ({\
+//     u16 a;\
+//     switch (GetStarterSpecies())\
+//     {\
+//     default:\
+//         a = SPECIES_RAIKOU;\
+//         break;\
+//     case SPECIES_BULBASAUR:\
+//         a = SPECIES_ENTEI;\
+//         break;\
+//     case SPECIES_CHARMANDER:\
+//         a = SPECIES_SUICUNE;\
+//         break;\
+//     }\
+//     a;\
+// })
 
 static void CreateInitialRoamerMons(void)
 {
@@ -231,7 +233,7 @@ static bool8 IsRoamerAt(RoamerInfo *roamerInfo, u8 mapGroup, u8 mapNum)
         return FALSE;
 }
 
-void CreateRoamerMonInstance(struct Roamer *roamer)
+static void CreateRoamerMonInstance(struct Roamer *roamer)
 {
     struct Pokemon *mon;
 
@@ -272,17 +274,27 @@ static RoamerInfo *get_random_roamer(){
 
 bool8 TryStartRoamerEncounter(void)
 {
-    struct RoamerInfo *randomRoamerInfo = get_random_roamer();
+  RoamerInfo *randomRoamers[ROAMER_SPECIES_COUNT] = {};
+  u16 randCount = 0;
+  u16 i;
+  u16 rand_index;
+  for (i = 0; i < ROAMER_SPECIES_COUNT; i++){
+    RoamerInfo *roamerInfo = &roamerInfos[i];
     // if (IsRoamerAt(randomRoamerInfo, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE)
-    if (IsRoamerAt(randomRoamerInfo, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE && (Random() % 4) == 0)
+    if (IsRoamerAt(roamerInfo, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE && (Random() % 4) == 0)
     {
-        CreateRoamerMonInstance(randomRoamerInfo->roamer);
-        return TRUE;
+        randomRoamers[randCount] = roamerInfo;
+        randCount++;
     }
-    else
-    {
-        return FALSE;
-    }
+  }
+
+  if (randCount == 0){
+    return FALSE;
+  }
+
+  rand_index = (Random() % randCount);
+  CreateRoamerMonInstance(randomRoamers[rand_index]->roamer);
+  return TRUE;
 }
 
 void UpdateRoamerHPStatus(struct Pokemon *mon)
