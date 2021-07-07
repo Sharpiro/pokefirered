@@ -1,12 +1,8 @@
 # notes
 
-## changes
+## compiler quirks
 
-- fast battle text speed
-- messing with starters
-- remove trade-based evolution
-- allow espeon and umbreon evolutions
-- add flag to hide previous quest log on load game
+- all function variables must be declared before modifying any of them
 
 ## points of interest
 
@@ -33,13 +29,17 @@
   - src/scrcmd.c
 - roaming pokemon
   - src/roamer.c
+- wild encounters
+  - src/data/wild_encounters.json
 
 ## scripting
 
 - setvar dest_var, constant
+  - set dest_var to constant
 - copyvar dest_var, src_var
-- addbyte dest_var, constant
+  - set dest_var to src_var
 - addvar dest_var, constant
+  - add constant to dest_var
 - setflag var
   - turn variable to true
 - clearflag var
@@ -52,14 +52,42 @@
 
 ## todo
 
-- L2 view temp vars in memory
-- gary should choose random
 - release all 3 dogs as roamers
 - release all 3 fr/lg starters as roamers
 - release all 3 g/s/c starters as roamers
+- L2 view temp vars in memory
+- gary should choose random
 - remove time played
 - add raikou's current location to a sign
 
 ## questions
 
 - how can important data be saved in temporary flags?
+  - probably can't...
+
+## changes
+
+- fast battle text speed
+- messing with starters
+- remove trade-based evolution
+- allow espeon and umbreon evolutions
+- add flag to hide previous quest log on load game
+
+## hacks to try
+
+- pokemon adventure red chapter
+  - follows original manga
+- pokemon ash gray
+  - follows original anime
+- pokemon liquid crystal
+  - crystal remake w/ extra zone
+- pokemon theta emerald ex (renev)
+  - follows emerald w/ all pokemon
+- pokemon rocket edition
+  - play as team rocket
+- pokemon radical red
+  - fire red hard mode
+- pokemon unbound
+  - fire red hack w/ new content
+- pokemon gaia
+  - ...
