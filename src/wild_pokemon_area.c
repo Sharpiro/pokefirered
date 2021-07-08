@@ -221,7 +221,7 @@ s32 BuildPokedexAreaSubspriteBuffer(u16 species, struct Subsprite * subsprites)
     return areaCount;
 }
 
-// todo: fix roamer pt 2
+// todo: roamer pt 2
 static s32 GetRoamerIndex(u16 species)
 {
     s32 i;

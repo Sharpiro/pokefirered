@@ -379,11 +379,13 @@ bool8 StandardWildEncounter(u32 currMetatileAttrs, u16 previousMetatileBehavior)
 
             else if (TryStartRoamerEncounter() == TRUE)
             {
-                roamer = &gSaveBlock1Ptr->roamer;
-                if (!IsWildLevelAllowedByRepel(roamer->level))
-                {
-                    return FALSE;
-                }
+                // todo: roamer
+                // roamer = &gSaveBlock1Ptr->roamer;
+                // if (!IsWildLevelAllowedByRepel(roamer->level))
+                // if (!IsWildLevelAllowedByRepel(50))
+                // {
+                //     return FALSE;
+                // }
 
                 StartRoamerBattle();
                 return TRUE;
@@ -418,11 +420,13 @@ bool8 StandardWildEncounter(u32 currMetatileAttrs, u16 previousMetatileBehavior)
 
             if (TryStartRoamerEncounter() == TRUE)
             {
-                roamer = &gSaveBlock1Ptr->roamer;
-                if (!IsWildLevelAllowedByRepel(roamer->level))
-                {
-                    return FALSE;
-                }
+                // todo: roamer
+                // roamer = &gSaveBlock1Ptr->roamer;
+                // if (!IsWildLevelAllowedByRepel(roamer->level))
+                // if (!IsWildLevelAllowedByRepel(50))
+                // {
+                //     return FALSE;
+                // }
 
                 StartRoamerBattle();
                 return TRUE;
