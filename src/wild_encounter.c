@@ -357,7 +357,7 @@ static bool8 DoGlobalWildEncounterDiceRoll(void)
 bool8 StandardWildEncounter(u32 currMetatileAttrs, u16 previousMetatileBehavior)
 {
     u16 headerId;
-    struct Roamer * roamer;
+    // struct Roamer * roamer;
 
     if (sWildEncountersDisabled == TRUE)
         return FALSE;
