@@ -3,9 +3,10 @@
 ## compiler quirks
 
 - all function variables must be declared before modifying any of them
-- magic macro that somehow prevents roamer pointer from dying
-  - `#define saveRoamers (*(&gSaveBlock1Ptr->roamers)`
+- `#define saveRoamers (*(&gSaveBlock1Ptr->roamers)`
+  - magic macro that somehow prevents roamer pointer from dying
   - a normal global pointer pointing at roamer(s) will go bad somehow
+  - possible to use a double pointer instead?
 
 ## points of interest
 
