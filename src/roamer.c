@@ -13,15 +13,19 @@ typedef struct RoamerLocation
   u8 map_number;
 } RoamerLocation;
 
-typedef struct RoamerInfo
+typedef struct RoamerHistory
 {
-  u8 roamer_index;
-  u16 roamer_species;
   RoamerLocation sRoamerLocation;
   RoamerLocation sLocationHistory[3];
+} RoamerHistory;
+
+typedef struct RoamerInfo
+{
+  struct Roamer *roamer;
+  RoamerHistory *roamerHistory;
 } RoamerInfo;
 
-static EWRAM_DATA RoamerInfo roamerInfos[ROAMER_SPECIES_COUNT] = {};
+static EWRAM_DATA RoamerHistory roamerHistories[ROAMER_SPECIES_COUNT] = {};
 
 const u16 roamer_types[ROAMER_SPECIES_COUNT] = {SPECIES_ENTEI, SPECIES_SUICUNE, SPECIES_RAIKOU};
 
@@ -70,10 +74,10 @@ void ClearRoamerData(void)
     for (i = 0; i < ROAMER_SPECIES_COUNT; i++)
     {
       gSaveBlock1Ptr->roamers[i] = (struct Roamer){};
-      roamerInfos[i].sRoamerLocation = (RoamerLocation){};
+      roamerHistories[i].sRoamerLocation = (RoamerLocation){};
       for (j = 0; j < LOCATION_HISTORY_COUNT; j++)
       {
-          roamerInfos[i].sLocationHistory[j] = (RoamerLocation){};
+          roamerHistories[i].sLocationHistory[j] = (RoamerLocation){};
       }
     }
 }
@@ -83,7 +87,7 @@ static void CreateInitialRoamerMons(void)
   struct Pokemon *tmpMon;
   struct Roamer *tmpRoamer;
 
-  int i;
+  u8 i;
   for (i = 0; i < ROAMER_SPECIES_COUNT; i++){
     tmpMon = &gEnemyParty[0];
     CreateMon(tmpMon, roamer_types[i], 50, 0x20, 0, 0, 0, 0);
@@ -100,10 +104,8 @@ static void CreateInitialRoamerMons(void)
     tmpRoamer->cute = GetMonData(tmpMon, MON_DATA_CUTE);
     tmpRoamer->smart = GetMonData(tmpMon, MON_DATA_SMART);
     tmpRoamer->tough = GetMonData(tmpMon, MON_DATA_TOUGH);
-    roamerInfos[i].roamer_index = i;
-    roamerInfos[i].roamer_species = tmpRoamer->species;
-    roamerInfos[i].sRoamerLocation.group_number = 3;
-    roamerInfos[i].sRoamerLocation.map_number = sRoamerLocations[Random() % (NELEMS(sRoamerLocations) - 1)][0];
+    roamerHistories[i].sRoamerLocation.group_number = 3;
+    roamerHistories[i].sRoamerLocation.map_number = sRoamerLocations[Random() % (NELEMS(sRoamerLocations) - 1)][0];
   }
 }
 
@@ -125,99 +127,117 @@ static void UpdateLocationHistoryForRoamer(RoamerLocation sLocationHistory[3])
 
 void UpdateRoamerHistories()
 {
-  int i;
+  u8 i;
   for (i = 0; i < ROAMER_SPECIES_COUNT; i++)
   {
-    struct RoamerInfo *roamerInfo = &roamerInfos[i];
-    UpdateLocationHistoryForRoamer(roamerInfo->sLocationHistory);
+    struct RoamerHistory *roamerHistory = &roamerHistories[i];
+    UpdateLocationHistoryForRoamer(roamerHistory->sLocationHistory);
   }
 }
 
 static void RoamerMoveToOtherLocationSet(RoamerInfo *roamerInfo)
 {
-    u8 mapNum = 0;
-    struct Roamer *roamer = &saveRoamers[roamerInfo->roamer_index];
+   roamerInfo->roamerHistory->sRoamerLocation.group_number = 3;
+   roamerInfo->roamerHistory->sRoamerLocation.map_number = sRoamerLocations[0][0];
 
-    if (!roamer->active)
-        return;
+    // u8 mapNum = 0;
+    // struct Roamer *roamer = &saveRoamers[roamerInfo->roamer_index];
 
-    roamerInfo->sRoamerLocation.group_number = 3;
+    // if (!roamer->active)
+    //     return;
 
-    while (1)
-    {
-        mapNum = sRoamerLocations[Random() % (NELEMS(sRoamerLocations) - 1)][0];
-        if (roamerInfo->sRoamerLocation.map_number != mapNum)
-        {
-            roamerInfo->sRoamerLocation.map_number = mapNum;
-            return;
-        }
-    }
+    // roamerInfo->sRoamerLocation.group_number = 3;
+
+    // while (1)
+    // {
+    //     mapNum = sRoamerLocations[Random() % (NELEMS(sRoamerLocations) - 1)][0];
+    //     if (roamerInfo->sRoamerLocation.map_number != mapNum)
+    //     {
+    //         roamerInfo->sRoamerLocation.map_number = mapNum;
+    //         return;
+    //     }
+    // }
+}
+
+static struct RoamerInfo get_roamer_by_index(u8 index)
+{
+    RoamerHistory *roamerHistory;
+    struct Roamer *roamer;
+    RoamerInfo roamerInfo ;
+
+    roamerHistory = &roamerHistories[index];
+    roamer = &saveRoamers[index];
+
+    roamerInfo = (RoamerInfo){.roamer = roamer, .roamerHistory = roamerHistory};
+    return roamerInfo;
 }
 
 void MoveRoamersToOtherLocationSet()
 {
-  int i;
+  u8 i;
   for (i = 0; i < ROAMER_SPECIES_COUNT; i++)
   {
-    struct RoamerInfo *roamerInfo = &roamerInfos[i];
-    RoamerMoveToOtherLocationSet(roamerInfo);
+    struct RoamerInfo roamerInfo = get_roamer_by_index(i);
+    RoamerMoveToOtherLocationSet(&roamerInfo);
   }
 }
 
 static void RoamerMove(RoamerInfo *roamerInfo)
 {
-    u8 locSet = 0;
-    u8 oldestGroup;
-    u8 oldestMap;
+    RoamerMoveToOtherLocationSet(roamerInfo);
 
-    if ((Random() % 16) == 0)
-    {
-        RoamerMoveToOtherLocationSet(roamerInfo);
-    }
-    else
-    {
-        struct Roamer *roamer = &saveRoamers[0];
+    // u8 locSet = 0;
+    // u8 oldestGroup;
+    // u8 oldestMap;
 
-        if (!roamer->active)
-            return;
+    // if ((Random() % 16) == 0)
+    // {
+    //     RoamerMoveToOtherLocationSet(roamerInfo);
+    // }
+    // else
+    // {
+    //     struct Roamer *roamer = &saveRoamers[0];
 
-        while (locSet < (NELEMS(sRoamerLocations) - 1))
-        {
-            if (roamerInfo->sRoamerLocation.map_number == sRoamerLocations[locSet][0])
-            {
-                u8 mapNum;
-                while (1)
-                {
-                    mapNum = sRoamerLocations[locSet][(Random() % 6) + 1];
-                    oldestGroup = roamerInfo->sLocationHistory[2].group_number;
-                    oldestMap = roamerInfo->sLocationHistory[2].map_number;
-                    if (!(oldestGroup == 3 && oldestMap == mapNum) && mapNum != 0xFF)
-                    {
-                        break;
-                    }
-                }
-                roamerInfo->sRoamerLocation.map_number = mapNum;
-                return;
-            }
-            locSet++;
-        }
-    }
+    //     if (!roamer->active)
+    //         return;
+
+    //     while (locSet < (NELEMS(sRoamerLocations) - 1))
+    //     {
+    //         if (roamerInfo->sRoamerLocation.map_number == sRoamerLocations[locSet][0])
+    //         {
+    //             u8 mapNum;
+    //             while (1)
+    //             {
+    //                 mapNum = sRoamerLocations[locSet][(Random() % 6) + 1];
+    //                 oldestGroup = roamerInfo->sLocationHistory[2].group_number;
+    //                 oldestMap = roamerInfo->sLocationHistory[2].map_number;
+    //                 if (!(oldestGroup == 3 && oldestMap == mapNum) && mapNum != 0xFF)
+    //                 {
+    //                     break;
+    //                 }
+    //             }
+    //             roamerInfo->sRoamerLocation.map_number = mapNum;
+    //             return;
+    //         }
+    //         locSet++;
+    //     }
+    // }
 }
 
 void MoveRoamers()
 {
-  int i;
+  u8 i;
   for (i = 0; i < ROAMER_SPECIES_COUNT; i++)
   {
-    struct RoamerInfo *roamerInfo = &roamerInfos[i];
-    RoamerMove(roamerInfo);
+    struct RoamerInfo roamerInfo = get_roamer_by_index(i);
+    RoamerMove(&roamerInfo);
   }
 }
 
 static bool8 IsRoamerAt(RoamerInfo *roamerInfo, u8 mapGroup, u8 mapNum)
 {
-  struct Roamer *roamer = &saveRoamers[roamerInfo->roamer_index];
-  RoamerLocation *roamerLoc = &roamerInfo->sRoamerLocation;
+  struct Roamer *roamer = roamerInfo->roamer;
+  RoamerLocation *roamerLoc = &roamerInfo->roamerHistory->sRoamerLocation;
   if (roamer->active && mapGroup == roamerLoc->group_number && mapNum == roamerLoc->map_number)
     return TRUE;
   else
@@ -240,28 +260,46 @@ static void CreateRoamerMonInstance(struct Roamer *roamer)
     SetMonData(mon, MON_DATA_TOUGH, &roamer->tough);
 }
 
-static struct RoamerInfo *get_roamer_by_species(u16 monSpecies)
+static struct RoamerInfo get_roamer_by_species(u16 monSpecies)
 {
-    RoamerInfo *roamerInfo;
-    int i;
+    RoamerInfo roamerInfo;
+
+    u8 i;
     for (i = 0; i < ROAMER_SPECIES_COUNT; i++){
       if (monSpecies == roamer_types[i]){
-        roamerInfo = &roamerInfos[i];
+        roamerInfo = get_roamer_by_index(i);
         break;
       }
-    } 
+    }
+
     return roamerInfo;
 }
 
-static struct RoamerInfo *get_roamer_by_mon(struct Pokemon *mon)
+static struct RoamerInfo get_roamer_by_mon(struct Pokemon *mon)
 {
   u16 monSpecies = GetMonData(mon, MON_DATA_SPECIES);
   return get_roamer_by_species(monSpecies);
 }
 
+// bool8 TryStartRoamerEncounter()
+// {
+//   u8 i;
+
+//   for (i = 0; i < ROAMER_SPECIES_COUNT; i++){
+//     RoamerInfo roamerInfo = get_roamer_by_index(i);
+//     if (IsRoamerAt(&roamerInfo, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE)
+//     {
+//         CreateRoamerMonInstance(roamerInfo.roamer);
+//         return TRUE;
+//     }
+//   }
+
+//   return FALSE;
+// }
+
 bool8 TryStartRoamerEncounter()
 {
-  u8 randomRoamersIndexes[ROAMER_SPECIES_COUNT] = {};
+  struct Roamer *randomRoamers[ROAMER_SPECIES_COUNT] = {};
   u8 randCount = 0;
   u8 i;
   u16 rand_index;
@@ -269,10 +307,10 @@ bool8 TryStartRoamerEncounter()
   struct Roamer *roamer;
 
   for (i = 0; i < ROAMER_SPECIES_COUNT; i++){
-    RoamerInfo *roamerInfo = &roamerInfos[i];
-    if (IsRoamerAt(roamerInfo, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE && (Random() % 4) == 0)
+    RoamerInfo roamerInfo = get_roamer_by_index(i);
+    if (IsRoamerAt(&roamerInfo, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE)
     {
-        randomRoamersIndexes[randCount] = i;
+        randomRoamers[randCount] = roamerInfo.roamer;
         randCount++;
     }
   }
@@ -280,37 +318,36 @@ bool8 TryStartRoamerEncounter()
   if (randCount == 0){
     return FALSE;
   }
+  if ((Random() % 4) != 0){
+    return FALSE;
+  }
 
   rand_index = (Random() % randCount);
-  roamer_index = randomRoamersIndexes[rand_index];
-  roamer = &saveRoamers[roamer_index];
+  roamer = randomRoamers[rand_index];
   CreateRoamerMonInstance(roamer);
   return TRUE;
 }
 
 void UpdateRoamerHPStatus(struct Pokemon *mon)
 {
-   RoamerInfo *roamerInfo = get_roamer_by_mon(mon);
-    struct Roamer *roamer = &saveRoamers[roamerInfo->roamer_index];
-   roamer->hp = GetMonData(mon, MON_DATA_HP);
-   roamer->status = GetMonData(mon, MON_DATA_STATUS);
+   RoamerInfo roamerInfo = get_roamer_by_mon(mon);
+   roamerInfo.roamer->hp = GetMonData(mon, MON_DATA_HP);
+   roamerInfo.roamer->status = GetMonData(mon, MON_DATA_STATUS);
 
-   RoamerMoveToOtherLocationSet(roamerInfo);
+   RoamerMoveToOtherLocationSet(&roamerInfo);
 }
 
 void SetRoamerInactive(struct Pokemon *mon)
 {
-  RoamerInfo *roamerInfo = get_roamer_by_mon(mon);
-  struct Roamer *roamer = &saveRoamers[roamerInfo->roamer_index];
-  roamer->active = FALSE;
+  RoamerInfo roamerInfo = get_roamer_by_mon(mon);
+  roamerInfo.roamer->active = FALSE;
 }
 
 u16 GetRoamerLocationMapSectionId(u16 species)
 {
-    RoamerInfo *roamerInfo = get_roamer_by_species(species);
-    RoamerLocation *roamerLoc = &roamerInfo->sRoamerLocation;
-    struct Roamer *roamer = &saveRoamers[roamerInfo->roamer_index];
-    if (!roamer->active){
+    RoamerInfo roamerInfo = get_roamer_by_species(species);
+    RoamerLocation *roamerLoc = &roamerInfo.roamerHistory->sRoamerLocation;
+    if (!roamerInfo.roamer->active){
         return MAPSEC_NONE;
     }
     return Overworld_GetMapHeaderByGroupAndId(roamerLoc->group_number, roamerLoc->map_number)->regionMapSectionId;

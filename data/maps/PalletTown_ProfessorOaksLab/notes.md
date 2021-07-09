@@ -7,6 +7,7 @@
   - magic macro that somehow prevents roamer pointer from dying
   - a normal global pointer pointing at roamer(s) will go bad somehow
   - possible to use a double pointer instead?
+- initialize non-save block memory!!!
 
 ## points of interest
 
@@ -57,6 +58,8 @@
 ## todo
 
 - release all 3 dogs as roamers
+  - test `UpdateRoamerHPStatus`
+  - test `SetRoamerInactive`
 - release all 3 fr/lg starters as roamers
 - release all 3 g/s/c starters as roamers
 - L2 view temp vars in memory
@@ -72,10 +75,12 @@
 ## changes
 
 - fast battle text speed
-- messing with starters
+- sane shiny encounter rate
+- first starter pokeball pulls from a random list of starters
 - remove trade-based evolution
 - allow espeon and umbreon evolutions
 - add flag to hide previous quest log on load game
+- release roamer after first rival battle
 
 ## hacks to try
 
