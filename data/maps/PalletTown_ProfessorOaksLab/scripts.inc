@@ -521,7 +521,7 @@ PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle:: @ 81694C2
 	fadedefaultbgm
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 4
 	setflag FLAG_BEAT_RIVAL_IN_OAKS_LAB
-  @goto PalletTown_Release_Dogs
+	goto PalletTown_Release_Dogs
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_RivalExitAfterBattleLeft:: @ 8169504
@@ -1384,7 +1384,6 @@ PalletTown_ProfessorOaksLab_EventScript_Aide3:: @ 8169E46
 
 PalletTown_ProfessorOaksLab_EventScript_Pokedex:: @ 8169E5F
 	msgbox PalletTown_ProfessorOaksLab_Text_BlankEncyclopedia, MSGBOX_NPC
-  goto PalletTown_Release_Dogs
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_Computer:: @ 8169E68
@@ -1415,7 +1414,7 @@ PalletTown_Movement_Release_Dogs::
 
 PalletTown_Release_Dogs::
 	delay 60
-  applymovement OBJ_EVENT_ID_PLAYER, PalletTown_Movement_Release_Dogs
+	applymovement OBJ_EVENT_ID_PLAYER, PalletTown_Movement_Release_Dogs
 	waitmovement 0
 	shakescreen
 	delay 30
