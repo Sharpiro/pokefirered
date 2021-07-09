@@ -457,3 +457,5 @@ void OakSpeechNidoranFFreeResources(void);
 void *OakSpeechNidoranFGetBuffer(u8 bufferId);
 
 #endif // GUARD_POKEMON_H
+
+#define BUGFIX_SETMONIVS
