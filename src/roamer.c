@@ -103,8 +103,7 @@ static void CreateInitialRoamerMons(void)
     roamerInfos[i].roamer_index = i;
     roamerInfos[i].roamer_species = tmpRoamer->species;
     roamerInfos[i].sRoamerLocation.group_number = 3;
-    // sRoamerLocation[MAP_NUM] = sRoamerLocations[Random() % (NELEMS(sRoamerLocations) - 1)][0];
-    roamerInfos[i].sRoamerLocation.map_number = sRoamerLocations[0][0];
+    roamerInfos[i].sRoamerLocation.map_number = sRoamerLocations[Random() % (NELEMS(sRoamerLocations) - 1)][0];
   }
 }
 
@@ -134,29 +133,25 @@ void UpdateRoamerHistories()
   }
 }
 
-// todo: roamer
 static void RoamerMoveToOtherLocationSet(RoamerInfo *roamerInfo)
 {
-   roamerInfo->sRoamerLocation.group_number = 3;
-   roamerInfo->sRoamerLocation.map_number = sRoamerLocations[0][0];
+    u8 mapNum = 0;
+    struct Roamer *roamer = &saveRoamers[roamerInfo->roamer_index];
 
-    // u8 mapNum = 0;
-    // struct Roamer *roamer = &saveRoamers[0];
+    if (!roamer->active)
+        return;
 
-    // if (!roamer->active)
-    //     return;
+    roamerInfo->sRoamerLocation.group_number = 3;
 
-    // sRoamerLocation[MAP_GRP] = 3;
-
-    // while (1)
-    // {
-    //     mapNum = sRoamerLocations[Random() % (NELEMS(sRoamerLocations) - 1)][0];
-    //     if (sRoamerLocation[MAP_NUM] != mapNum)
-    //     {
-    //         sRoamerLocation[MAP_NUM] = mapNum;
-    //         return;
-    //     }
-    // }
+    while (1)
+    {
+        mapNum = sRoamerLocations[Random() % (NELEMS(sRoamerLocations) - 1)][0];
+        if (roamerInfo->sRoamerLocation.map_number != mapNum)
+        {
+            roamerInfo->sRoamerLocation.map_number = mapNum;
+            return;
+        }
+    }
 }
 
 void MoveRoamersToOtherLocationSet()
@@ -169,40 +164,44 @@ void MoveRoamersToOtherLocationSet()
   }
 }
 
-// todo: roamer
 static void RoamerMove(RoamerInfo *roamerInfo)
 {
-    RoamerMoveToOtherLocationSet(roamerInfo);
-    // u8 locSet = 0;
+    u8 locSet = 0;
+    u8 oldestGroup;
+    u8 oldestMap;
 
-    // if ((Random() % 16) == 0)
-    // {
-    //     RoamerMoveToOtherLocationSet();
-    // }
-    // else
-    // {
-    //     struct Roamer *roamer = &saveRoamers[0];
+    if ((Random() % 16) == 0)
+    {
+        RoamerMoveToOtherLocationSet(roamerInfo);
+    }
+    else
+    {
+        struct Roamer *roamer = &saveRoamers[0];
 
-    //     if (!roamer->active)
-    //         return;
+        if (!roamer->active)
+            return;
 
-    //     while (locSet < (NELEMS(sRoamerLocations) - 1))
-    //     {
-    //         if (sRoamerLocation[MAP_NUM] == sRoamerLocations[locSet][0])
-    //         {
-    //             u8 mapNum;
-    //             while (1)
-    //             {
-    //                 mapNum = sRoamerLocations[locSet][(Random() % 6) + 1];
-    //                 if (!(sLocationHistory[2][MAP_GRP] == 3 && sLocationHistory[2][MAP_NUM] == mapNum) && mapNum != 0xFF)
-    //                     break;
-    //             }
-    //             sRoamerLocation[MAP_NUM] = mapNum;
-    //             return;
-    //         }
-    //         locSet++;
-    //     }
-    // }
+        while (locSet < (NELEMS(sRoamerLocations) - 1))
+        {
+            if (roamerInfo->sRoamerLocation.map_number == sRoamerLocations[locSet][0])
+            {
+                u8 mapNum;
+                while (1)
+                {
+                    mapNum = sRoamerLocations[locSet][(Random() % 6) + 1];
+                    oldestGroup = roamerInfo->sLocationHistory[2].group_number;
+                    oldestMap = roamerInfo->sLocationHistory[2].map_number;
+                    if (!(oldestGroup == 3 && oldestMap == mapNum) && mapNum != 0xFF)
+                    {
+                        break;
+                    }
+                }
+                roamerInfo->sRoamerLocation.map_number = mapNum;
+                return;
+            }
+            locSet++;
+        }
+    }
 }
 
 void MoveRoamers()
@@ -271,8 +270,7 @@ bool8 TryStartRoamerEncounter()
 
   for (i = 0; i < ROAMER_SPECIES_COUNT; i++){
     RoamerInfo *roamerInfo = &roamerInfos[i];
-    if (IsRoamerAt(roamerInfo, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE)
-    // if (IsRoamerAt(roamerInfo, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE && (Random() % 4) == 0)
+    if (IsRoamerAt(roamerInfo, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum) == TRUE && (Random() % 4) == 0)
     {
         randomRoamersIndexes[randCount] = i;
         randCount++;
