@@ -426,3 +426,5 @@ void DestroyMonSpritesGfxManager(void);
 u8 *MonSpritesGfxManager_GetSpritePtr(u8 bufferId);
 
 #endif // GUARD_POKEMON_H
+
+#define BUGFIX_SETMONIVS
