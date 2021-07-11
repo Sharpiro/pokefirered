@@ -63,12 +63,12 @@
 - release all 3 dogs as roamers
   - test `UpdateRoamerHPStatus`
   - test `SetRoamerInactive`
+  - add raikou's current location to a sign
 - release all 3 fr/lg starters as roamers
 - release all 3 g/s/c starters as roamers
 - L2 view temp vars in memory
 - gary should choose random
 - remove time played
-- add raikou's current location to a sign
 
 ## questions
 

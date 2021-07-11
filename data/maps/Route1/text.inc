@@ -23,6 +23,5 @@ Route1_Text_CanJumpFromLedges:: @ 81833B9
     .string "quicker that way.$"
 
 Route1_Text_RouteSign:: @ 818343A
-    .string "group: {STR_VAR_1}\n"
-    .string "map: {STR_VAR_2}$"
+    .string "{STR_VAR_1} - {STR_VAR_2} - {STR_VAR_3}$"
 

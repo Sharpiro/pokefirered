@@ -32,9 +32,11 @@ Route1_EventScript_Boy:: @ 8167F52
 	end
 
 Route1_EventScript_RouteSign:: @ 8167F5B
-  specialvar VAR_TEMP_3, GetFirstRoamerGroupNumber
-  getnumberstring 0, VAR_TEMP_3
   specialvar VAR_TEMP_3, GetFirstRoamerMapNumber
+  getnumberstring 0, VAR_TEMP_3
+  specialvar VAR_TEMP_3, GetSecondRoamerMapNumber
   getnumberstring 1, VAR_TEMP_3
+  specialvar VAR_TEMP_3, GetThirdRoamerMapNumber
+  getnumberstring 2, VAR_TEMP_3
 	msgbox Route1_Text_RouteSign, MSGBOX_SIGN
 	end
