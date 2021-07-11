@@ -347,22 +347,7 @@ u16 GetRoamerLocationMapSectionId(u16 species)
     return Overworld_GetMapHeaderByGroupAndId(roamerLoc->group_number, roamerLoc->map_number)->regionMapSectionId;
 }
 
-u8 GetFirstRoamerGroupNumber()
+u8 GetRoamerMapNumber(u8 index)
 {
-  return roamerHistories[0].sRoamerLocation.group_number;
-}
-
-u8 GetFirstRoamerMapNumber()
-{
-  return roamerHistories[0].sRoamerLocation.map_number;
-}
-
-u8 GetSecondRoamerMapNumber()
-{
-  return roamerHistories[1].sRoamerLocation.map_number;
-}
-
-u8 GetThirdRoamerMapNumber()
-{
-  return roamerHistories[2].sRoamerLocation.map_number;
+  return roamerHistories[index].sRoamerLocation.map_number;
 }

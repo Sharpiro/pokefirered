@@ -13,7 +13,7 @@ void CreateRoamerMonInstance(void);
 u8 TryStartRoamerEncounter(void);
 void UpdateRoamerHPStatus(struct Pokemon *mon);
 void SetRoamerInactive(struct Pokemon *mon);
-void GetRoamerLocation(u8 *mapGroup, u8 *mapNum);
+u8 GetRoamerMapNumber(u8 index);
 u16 GetRoamerLocationMapSectionId(u16 species);
 
 #endif // GUARD_ROAMER_H

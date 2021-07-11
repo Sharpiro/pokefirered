@@ -36,6 +36,7 @@
 #include "constants/event_objects.h"
 // todo: move somewhere more logical?
 #include "constants/species.h"
+#include "roamer.h";
 
 extern u16 (*const gSpecials[])(void);
 extern u16 (*const gSpecialsEnd[])(void);
@@ -2257,5 +2258,13 @@ bool8 ScrCmd_setmonmetlocation(struct ScriptContext * ctx)
 
     if (partyIndex < PARTY_SIZE)
         SetMonData(&gPlayerParty[partyIndex], MON_DATA_MET_LOCATION, &location);
+    return FALSE;
+}
+
+bool8 ScrCmd_debug(struct ScriptContext * ctx)
+{
+    u8 first_var = ScriptReadByte(ctx);
+
+    gSpecialVar_Result = GetRoamerMapNumber(first_var);
     return FALSE;
 }
