@@ -22,6 +22,7 @@
   - species list
 - new_game.c
   - new game setup
+  - default settings
 - load_save.c
   - continue game setup
 - data/maps/
