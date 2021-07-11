@@ -32,6 +32,9 @@
   - asm/macros/event.inc
   - script_cmd_table.inc
   - src/scrcmd.c
+- script specials
+  - data/specials.inc
+  - src/field_specials.c
 - roaming pokemon
   - src/roamer.c
 - wild encounters
