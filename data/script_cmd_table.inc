@@ -132,7 +132,7 @@ gScriptCmdTable:: @ 815F9B4
 	.4byte ScrCmd_bufferitemname
 	.4byte ScrCmd_bufferdecorationname
 	.4byte ScrCmd_buffermovename
-	.4byte ScrCmd_buffernumberstring
+	.4byte ScrCmd_buffernumberstring @ 0x83
 	.4byte ScrCmd_bufferstdstring
 	.4byte ScrCmd_bufferstring
 	.4byte ScrCmd_pokemart

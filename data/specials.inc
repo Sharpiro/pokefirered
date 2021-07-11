@@ -454,4 +454,6 @@ gSpecials:: @ 815FD60
 	def_special CreateEventLegalEnemyMon
 
   def_special GetRandomStarter
+  def_special GetFirstRoamerGroupNumber
+  def_special GetFirstRoamerMapNumber
 gSpecialsEnd::

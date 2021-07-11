@@ -23,6 +23,6 @@ Route1_Text_CanJumpFromLedges:: @ 81833B9
     .string "quicker that way.$"
 
 Route1_Text_RouteSign:: @ 818343A
-    .string "ROUTE 1\n"
-    .string "PALLET TOWN - VIRIDIAN CITY$"
+    .string "group: {STR_VAR_1}\n"
+    .string "map: {STR_VAR_2}$"
 
