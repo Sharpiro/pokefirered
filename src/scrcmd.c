@@ -2273,6 +2273,7 @@ bool8 ScrCmd_debug(struct ScriptContext *ctx)
     // const int const_x = sizeof(struct MailStruct);
 
     // 64 bytes, overage 0 bytes, should be 64
+    // gSpecialVar_Result = GetRoamerMapNumber(first_var);
     const int const_x = sizeof(struct FameCheckerSaveData);
 
     const int const_save_size = sizeof(struct SaveBlock1);
