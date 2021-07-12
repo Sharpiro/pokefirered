@@ -58,18 +58,6 @@
 - `\p` creates a whole new text window
 - `\n` creates a new line within an existing text window
 
-## todo
-
-- release all 3 dogs as roamers
-  - test `UpdateRoamerHPStatus`
-  - test `SetRoamerInactive`
-  - add raikou's current location to a sign
-- release all 3 fr/lg starters as roamers
-- release all 3 g/s/c starters as roamers
-- L2 view temp vars in memory
-- gary should choose random
-- remove time played
-
 ## questions
 
 - how can important data be saved in temporary flags?
@@ -103,3 +91,18 @@
   - fire red hack w/ new content
 - pokemon gaia
   - ...
+
+## todo
+
+- release all 3 dogs as roamers
+  - ~~test `UpdateRoamerHPStatus`~~
+  - ~~test `SetRoamerInactive`~~
+  - ~~add raikou's current location to a sign~~
+  - test removing original roamer prop from save block
+- release all 3 fr/lg starters as roamers
+- release all 3 g/s/c starters as roamers
+- L2 view temp vars in memory
+- gary should choose random
+- remove time played
+
+## done

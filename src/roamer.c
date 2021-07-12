@@ -32,12 +32,6 @@ const u16 roamer_types[ROAMER_SPECIES_COUNT] = {SPECIES_ENTEI, SPECIES_SUICUNE, 
 /** somehow prevents roamer pointer from dying */
 #define saveRoamers (*(&gSaveBlock1Ptr->roamers))
 
-enum
-{
-    MAP_GRP = 0, // map group
-    MAP_NUM = 1, // map number
-};
-
 const u8 sRoamerLocations[][7] = {
     {MAP_NUM(ROUTE1), MAP_NUM(ROUTE2), MAP_NUM(ROUTE21_NORTH), MAP_NUM(ROUTE22), 0xff, 0xff, 0xff},
     {MAP_NUM(ROUTE2), MAP_NUM(ROUTE1), MAP_NUM(ROUTE3), MAP_NUM(ROUTE22), 0xff, 0xff, 0xff},
@@ -70,19 +64,14 @@ const u8 sRoamerLocations[][7] = {
 void ClearRoamerData(void)
 {
     u8 i;
-    u8 j;
     for (i = 0; i < ROAMER_SPECIES_COUNT; i++)
     {
       gSaveBlock1Ptr->roamers[i] = (struct Roamer){};
-      roamerHistories[i].sRoamerLocation = (RoamerLocation){};
-      for (j = 0; j < LOCATION_HISTORY_COUNT; j++)
-      {
-          roamerHistories[i].sLocationHistory[j] = (RoamerLocation){};
-      }
+      roamerHistories[i] = (RoamerHistory){};
     }
 }
 
-static void CreateInitialRoamerMons(void)
+static void CreateInitialRoamerMons()
 {
   struct Pokemon *tmpMon;
   struct Roamer *tmpRoamer;
@@ -115,7 +104,7 @@ void InitRoamer(void)
     CreateInitialRoamerMons();
 }
 
-static void UpdateLocationHistoryForRoamer(RoamerLocation sLocationHistory[3])
+static void UpdateLocationHistoryForRoamer(RoamerLocation *sLocationHistory)
 { 
    sLocationHistory[2].group_number = sLocationHistory[1].group_number;
    sLocationHistory[2].map_number = sLocationHistory[1].map_number;
