@@ -36,6 +36,7 @@
 #include "constants/event_objects.h"
 // todo: move somewhere more logical?
 #include "constants/species.h"
+#include "roamer.h";
 
 extern u16 (*const gSpecials[])(void);
 extern u16 (*const gSpecialsEnd[])(void);
