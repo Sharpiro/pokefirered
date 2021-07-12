@@ -31,5 +31,11 @@ Route1_EventScript_Boy::
 	end
 
 Route1_EventScript_RouteSign::
+	debug 0
+	getnumberstring 0, VAR_RESULT
+	debug 1
+	getnumberstring 1, VAR_RESULT
+	debug 2
+	getnumberstring 2, VAR_RESULT
 	msgbox Route1_Text_RouteSign, MSGBOX_SIGN
 	end

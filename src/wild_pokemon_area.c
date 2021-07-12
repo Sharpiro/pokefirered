@@ -173,8 +173,11 @@ s32 GetSpeciesPokedexAreaMarkers(u16 species, struct Subsprite * subsprites)
     s32 alteringCaveNum;
     s32 i;
 
-    if (GetRoamerIndex(species) >= 0)
+    s32 roamerIndex = GetRoamerIndex(species);
+    if (roamerIndex >= SPECIES_NONE)
+    {
         return GetRoamerPokedexAreaMarkers(species, subsprites);
+    }
 
     seviiAreas = GetUnlockedSeviiAreas();
     alteringCaveCount = 0;
@@ -220,6 +223,7 @@ s32 GetSpeciesPokedexAreaMarkers(u16 species, struct Subsprite * subsprites)
     return areaCount;
 }
 
+// todo: roamer pt 2
 static s32 GetRoamerIndex(u16 species)
 {
     s32 i;
@@ -234,11 +238,23 @@ static s32 GetRoamerIndex(u16 species)
 
 static s32 GetRoamerPokedexAreaMarkers(u16 species, struct Subsprite * subsprites)
 {
+<<<<<<< HEAD
     u16 mapSecId;
     s32 roamerIdx;
     u16 dexArea;
     s32 tableIndex;
+||||||| parent of c5358872a (Feature/multi roamer (#1))
+    u16 roamerLocation;
+    s32 roamerIdx;
+    u16 dexAreaSubspriteIdx;
+    s32 dexAreaEntryLUTidx;
+=======
+    u16 roamerLocation;
+    u16 dexAreaSubspriteIdx;
+    s32 dexAreaEntryLUTidx;
+>>>>>>> c5358872a (Feature/multi roamer (#1))
 
+<<<<<<< HEAD
     // Make sure that this is a roamer species, and that it corresponds to the player's starter.
     roamerIdx = GetRoamerIndex(species);
     if (roamerIdx < 0)
@@ -249,6 +265,20 @@ static s32 GetRoamerPokedexAreaMarkers(u16 species, struct Subsprite * subsprite
     mapSecId = GetRoamerLocationMapSectionId();
     tableIndex = 0;
     if (FindDexAreaByMapSec(mapSecId, sDexAreas_Kanto, ARRAY_COUNT(sDexAreas_Kanto), &tableIndex, &dexArea))
+||||||| parent of c5358872a (Feature/multi roamer (#1))
+    roamerIdx = GetRoamerIndex(species);
+    if (roamerIdx < 0)
+        return 0;
+    if (sRoamerPairs[roamerIdx].starter != GetStarterSpecies())
+        return 0;
+    roamerLocation = GetRoamerLocationMapSectionId();
+    dexAreaEntryLUTidx = 0;
+    if (TryGetMapSecPokedexAreaEntry(roamerLocation, sDexAreas_Kanto, 55, &dexAreaEntryLUTidx, &dexAreaSubspriteIdx))
+=======
+    roamerLocation = GetRoamerLocationMapSectionId(species);
+    dexAreaEntryLUTidx = 0;
+    if (TryGetMapSecPokedexAreaEntry(roamerLocation, sDexAreas_Kanto, 55, &dexAreaEntryLUTidx, &dexAreaSubspriteIdx))
+>>>>>>> c5358872a (Feature/multi roamer (#1))
     {
         if (dexArea != DEX_AREA_NONE)
         {

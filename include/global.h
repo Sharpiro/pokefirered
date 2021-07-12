@@ -747,6 +747,8 @@ struct ExternalEventFlags
 
 } __attribute__((packed));/*size = 0x15*/
 
+#define ROAMER_SPECIES_COUNT 3
+
 struct SaveBlock1
 {
     /*0x0000*/ struct Coords16 pos;
@@ -794,7 +796,7 @@ struct SaveBlock1
     /*0x309C*/ u8 giftRibbons[GIFT_RIBBONS_COUNT];
     /*0x30A7*/ struct ExternalEventData externalEventData;
     /*0x30BB*/ struct ExternalEventFlags externalEventFlags;
-    /*0x30D0*/ struct Roamer roamer;
+    /*0x30D0*/ struct Roamer roamerOLD;
     /*0x30EC*/ struct EnigmaBerry enigmaBerry;
     /*0x3120*/ struct MysteryGiftSave mysteryGift;
     /*0x348C*/ u8 unused_348C[400];
@@ -810,6 +812,7 @@ struct SaveBlock1
     /*0x3D24*/ u8 unused_3D24[16];
     /*0x3D34*/ u32 towerChallengeId;
     /*0x3D38*/ struct TrainerTower trainerTower[NUM_TOWER_CHALLENGE_TYPES];
+    /*0x....*/ struct Roamer roamers[ROAMER_SPECIES_COUNT];
 }; // size: 0x3D68
 
 struct MapPosition

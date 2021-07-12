@@ -342,8 +342,8 @@ static void Overworld_ResetStateOnContinue(void)
     FlagClear(FLAG_SYS_SAFARI_MODE);
     VarSet(VAR_MAP_SCENE_FUCHSIA_CITY_SAFARI_ZONE_ENTRANCE, 0);
     ChooseAmbientCrySpecies();
-    UpdateLocationHistoryForRoamer();
-    RoamerMoveToOtherLocationSet();
+    UpdateRoamerHistories();
+    MoveRoamersToOtherLocationSet();
 }
 
 // Routines related to game stats
@@ -770,8 +770,8 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     for (paletteIndex = 7; paletteIndex < 13; paletteIndex++)
         ApplyWeatherGammaShiftToPal(paletteIndex);
     InitSecondaryTilesetAnimation();
-    UpdateLocationHistoryForRoamer();
-    RoamerMove();
+    UpdateRoamerHistories();
+    MoveRoamers();
     QL_ResetDefeatedWildMonRecord();
     DoCurrentWeather();
     ResetFieldTasksArgs();
@@ -801,9 +801,19 @@ static void LoadMapFromWarp(bool32 unused)
     Overworld_ClearSavedMusic();
     RunOnTransitionMapScript();
     TryRegenerateRenewableHiddenItems();
+<<<<<<< HEAD
     UpdateLocationHistoryForRoamer();
     RoamerMoveToOtherLocationSet();
     QL_ResetDefeatedWildMonRecord();
+||||||| parent of c5358872a (Feature/multi roamer (#1))
+    UpdateLocationHistoryForRoamer();
+    RoamerMoveToOtherLocationSet();
+    sub_8110920();
+=======
+    UpdateRoamerHistories();
+    MoveRoamersToOtherLocationSet();
+    sub_8110920();
+>>>>>>> c5358872a (Feature/multi roamer (#1))
     InitMap();
 }
 

@@ -485,7 +485,7 @@ PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle::
 	fadedefaultbgm
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 4
 	setflag FLAG_BEAT_RIVAL_IN_OAKS_LAB
-  goto PalletTown_Release_Dogs
+	goto PalletTown_Release_Dogs
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_RivalExitAfterBattleLeft::
@@ -1316,7 +1316,7 @@ PalletTown_Movement_Release_Dogs::
 
 PalletTown_Release_Dogs::
 	delay 60
-  applymovement OBJ_EVENT_ID_PLAYER, PalletTown_Movement_Release_Dogs
+	applymovement OBJ_EVENT_ID_PLAYER, PalletTown_Movement_Release_Dogs
 	waitmovement 0
 	shakescreen
 	delay 30

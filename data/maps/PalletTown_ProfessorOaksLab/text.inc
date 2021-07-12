@@ -362,6 +362,5 @@ PalletTown_ProfessorOaksLab_Text_RivalIllCompleteThePokedex::
     .string "Anyways, I'm outta here!$"
 
 PalletTown_Release_Dogs_Text:: @ 818F1DB
-    .string "You saw a glimpse of\n"
-    .string "powerful monsters being\p"
-    .string "released…$"
+    .string "You saw a vision of powerful\n"
+    .string "monsters being released…$"

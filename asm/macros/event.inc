@@ -309,10 +309,11 @@
 	.2byte \flag
 	.endm
 
-	@ Does nothing
-	@.macro noop
-	@.byte 0xd5
-	@.endm
+	@ debug
+	.macro debug value:req
+	.byte 0xd5
+	.2byte \value
+	.endm
 
 	@ Compares flag to TRUE and stores the result in comparisonResult to be used by goto_if, etc
 	@ See additional _if_unset and _if_set macros
