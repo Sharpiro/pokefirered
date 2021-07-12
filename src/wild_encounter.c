@@ -357,7 +357,6 @@ static bool8 DoGlobalWildEncounterDiceRoll(void)
 bool8 StandardWildEncounter(u32 currMetatileAttrs, u16 previousMetatileBehavior)
 {
     u16 headerId;
-    // struct Roamer * roamer;
 
     if (sWildEncountersDisabled == TRUE)
         return FALSE;
@@ -365,6 +364,7 @@ bool8 StandardWildEncounter(u32 currMetatileAttrs, u16 previousMetatileBehavior)
     headerId = GetCurrentMapWildMonHeaderId();
     if (headerId != 0xFFFF)
     {
+        struct Pokemon *wildPokemon = &gEnemyParty[0];
         if (GetMetatileAttributeFromRawMetatileBehavior(currMetatileAttrs, METATILE_ATTRIBUTE_ENCOUNTER_TYPE) == TILE_ENCOUNTER_LAND)
         {
             if (gWildMonHeaders[headerId].landMonsInfo == NULL)
@@ -379,10 +379,7 @@ bool8 StandardWildEncounter(u32 currMetatileAttrs, u16 previousMetatileBehavior)
 
             else if (TryStartRoamerEncounter() == TRUE)
             {
-                // todo: roamer pt 2
-                // roamer = &gSaveBlock1Ptr->roamer;
-                // if (!IsWildLevelAllowedByRepel(roamer->level))
-                if (!IsWildLevelAllowedByRepel(50))
+                if (!IsWildLevelAllowedByRepel(wildPokemon->level))
                 {
                     return FALSE;
                 }
@@ -420,10 +417,7 @@ bool8 StandardWildEncounter(u32 currMetatileAttrs, u16 previousMetatileBehavior)
 
             if (TryStartRoamerEncounter() == TRUE)
             {
-                // todo: roamer pt 2
-                // roamer = &gSaveBlock1Ptr->roamer;
-                // if (!IsWildLevelAllowedByRepel(roamer->level))
-                if (!IsWildLevelAllowedByRepel(50))
+                if (!IsWildLevelAllowedByRepel(wildPokemon->level))
                 {
                     return FALSE;
                 }
