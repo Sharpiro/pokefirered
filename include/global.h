@@ -119,6 +119,8 @@ extern u8 gStringVar4[];
 #define DEX_FLAGS_NO (ROUND_BITS_TO_BYTES(NUM_SPECIES))
 #define NUM_FLAG_BYTES (ROUND_BITS_TO_BYTES(FLAGS_COUNT))
 
+#define STATIC_ASSERT(COND) typedef char static_assertion[(COND) ? 1 : -1]
+
 struct Coords8
 {
     s8 x;
@@ -317,12 +319,6 @@ struct SaveBlock2
     /*0xB10*/ struct BerryPickingResults berryPick;
     /*0xB20*/ u8 filler_B20[0x400];
     /*0xF20*/ u32 encryptionKey;
-    u16 usless_data1;
-    u16 usless_data2;
-    u16 usless_data3;
-    u16 usless_data4;
-    u16 usless_data5;
-    // bad starting here
 }; // size: 0xF24
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
@@ -793,7 +789,9 @@ struct ExternalEventFlags
 } __attribute__((packed));/*size = 0x15*/
 
 #define UNION_ROOM_KB_ROW_COUNT 10
+
 #define ROAMER_SPECIES_COUNT 5
+// #define SAVEBLOCK1_MAX_SIZE SECTOR_DATA_SIZE * 4
 
 struct SaveBlock1
 {
@@ -860,7 +858,12 @@ struct SaveBlock1
     /*0x3D38*/ struct TrainerTower trainerTower[NUM_TOWER_CHALLENGE_TYPES];
     // max roamer = 4 or 5 for now
     /*0x....*/ struct Roamer roamers[ROAMER_SPECIES_COUNT];
+    // u8 filler_end[12];
 }; // size: 0x3D68
+
+// STATIC_ASSERT(sizeof(struct SaveBlock1) == 16128);
+// const int save_block_1_size = sizeof(struct SaveBlock1);
+// const int temp_size = sizeof(struct ObjectEvent);
 
 struct MapPosition
 {

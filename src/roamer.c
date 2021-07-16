@@ -368,6 +368,7 @@ u16 GetRoamerMapNumber(u8 index)
 {
   // return roamerHistories[index].sRoamerLocation.group_number;
   // return gSaveBlock2Ptr->usless_data5;
-  // return saveRoamers[5].level;
-  return roamerHistories[index].sRoamerLocation.map_number;
+  // return saveRoamers[index].species;
+  return saveRoamers[index].level;
+  // return roamerHistories[index].sRoamerLocation.map_number;
 }
