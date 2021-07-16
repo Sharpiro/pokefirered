@@ -391,7 +391,7 @@ struct Roamer
     /*0x12*/ u8 tough;
     /*0x13*/ bool8 active;
     /*0x14*/ u8 filler[0x8];
-};
+}; // size: 28
 
 struct RamScriptData
 {
@@ -790,7 +790,7 @@ struct ExternalEventFlags
 
 #define UNION_ROOM_KB_ROW_COUNT 10
 
-#define ROAMER_SPECIES_COUNT 5
+#define ROAMER_SPECIES_COUNT 6
 // #define SAVEBLOCK1_MAX_SIZE SECTOR_DATA_SIZE * 4
 
 struct SaveBlock1
@@ -860,10 +860,6 @@ struct SaveBlock1
     /*0x....*/ struct Roamer roamers[ROAMER_SPECIES_COUNT];
     // u8 filler_end[12];
 }; // size: 0x3D68
-
-// STATIC_ASSERT(sizeof(struct SaveBlock1) == 16128);
-// const int save_block_1_size = sizeof(struct SaveBlock1);
-// const int temp_size = sizeof(struct ObjectEvent);
 
 struct MapPosition
 {
