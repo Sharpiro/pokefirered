@@ -237,6 +237,7 @@
 	.endm
 
 	@ Calls the native C function stored at `func`.
+  @ AKA: `callasm`
 	.macro callnative func:req
 	.byte 0x23
 	.4byte \func
@@ -1012,6 +1013,7 @@
 	.endm
 
 	@ Stores a random integer between 0 and limit in VAR_RESULT.
+	@ [0,limit)
 	.macro random limit:req
 	.byte 0x8f
 	.2byte \limit
@@ -1126,7 +1128,7 @@
 	.byte 0xa0
 	.endm
 
-	@ Plays the specified (species) Pokemon's cry. You can use waitcry to block script execution until the sound finishes.
+	@ Plays the specified (species) Pokemon's cry. You can use waitmoncry to block script execution until the sound finishes.
 	.macro playmoncry species:req, effect:req
 	.byte 0xa1
 	.2byte \species
@@ -1640,4 +1642,10 @@
 	braillemessage \text
 	getbraillestringwidth \text
 	call EventScript_BrailleCursorWaitButton
+	.endm
+
+	@ debug
+	.macro debug value:req
+	.byte 0xd5
+	.2byte \value
 	.endm
