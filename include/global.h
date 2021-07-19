@@ -391,7 +391,7 @@ struct Roamer
     /*0x12*/ u8 tough;
     /*0x13*/ bool8 active;
     /*0x14*/ u8 filler[0x8];
-}; // size: 28
+};
 
 struct RamScriptData
 {
@@ -855,9 +855,7 @@ struct SaveBlock1
     /*0x3D24*/ u8 filler3D24[0x10];
     /*0x3D34*/ u32 towerChallengeId;
     /*0x3D38*/ struct TrainerTower trainerTower[NUM_TOWER_CHALLENGE_TYPES];
-    // max roamer = 4 or 5 for now
     /*0x....*/ struct Roamer roamers[ROAMER_SPECIES_COUNT];
-    // u8 filler_end[12];
 }; // size: 0x3D68
 
 #define SECTOR_DATA_SIZE 4084

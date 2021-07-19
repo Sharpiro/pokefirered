@@ -94,7 +94,6 @@ static void CreateInitialRoamerMons()
   u8 i;
   for (i = 0; i < ROAMER_SPECIES_COUNT; i++){
     RoamerType roamer_type = roamer_types[i];
-    // if (roamer_type.random) continue;
 
     tmpMon = &gEnemyParty[0];
     CreateMon(tmpMon, roamer_type.species, roamer_type.level, 0x20, 0, 0, 0, 0);
@@ -113,11 +112,6 @@ static void CreateInitialRoamerMons()
     tmpRoamer->tough = GetMonData(tmpMon, MON_DATA_TOUGH);
     roamerHistories[i].sRoamerLocation.group_number = 3;
     roamerHistories[i].sRoamerLocation.map_number = sRoamerLocations[Random() % (NELEMS(sRoamerLocations) - 1)][0];
-    // gSaveBlock2Ptr->usless_data1 = 65535;
-    // gSaveBlock2Ptr->usless_data2 = 65535;
-    // gSaveBlock2Ptr->usless_data3 = 65535;
-    // gSaveBlock2Ptr->usless_data4 = 65535;
-    // gSaveBlock2Ptr->usless_data5 = 65535;
   }
 }
 
@@ -127,7 +121,7 @@ void InitRoamer(void)
     CreateInitialRoamerMons();
 }
 
-static void UpdateLocationHistoryForRoamer(RoamerLocation sLocationHistory[])
+static void UpdateLocationHistoryForRoamer(RoamerLocation sLocationHistory[3])
 { 
    sLocationHistory[2].group_number = sLocationHistory[1].group_number;
    sLocationHistory[2].map_number = sLocationHistory[1].map_number;
@@ -150,10 +144,6 @@ void UpdateRoamerHistories()
 /** move far */
 static void RoamerMoveToOtherLocationSet(RoamerInfo *roamerInfo)
 {
-    // roamerInfo->roamerHistory->sRoamerLocation.group_number = 3;
-    // roamerInfo->roamerHistory->sRoamerLocation.group_number = saveRoamers[5];
-    // roamerInfo->roamerHistory->sRoamerLocation.map_number = 3;
-
     u8 mapNum = 0;
 
     if (!roamerInfo->roamer->active)
@@ -198,7 +188,6 @@ void MoveRoamersToOtherLocationSet()
 /** move near or far */
 static void RoamerMove(RoamerInfo *roamerInfo)
 {
-    // RoamerMoveToOtherLocationSet(roamerInfo);
     u8 locSet = 0;
     u8 oldestGroup;
     u8 oldestMap;
@@ -364,14 +353,7 @@ u16 GetRoamerLocationMapSectionId(u16 species)
     return Overworld_GetMapHeaderByGroupAndId(roamerLoc->group_number, roamerLoc->map_number)->regionMapSectionId;
 }
 
-u16 GetRoamerMapNumber(u16 index)
+u8 GetRoamerMapNumber(u8 index)
 {
-  // return roamerHistories[index].sRoamerLocation.group_number;
-  // return gSaveBlock2Ptr->usless_data5;
-  // return saveRoamers[index].species;
-  // int temp = sizeof(*gSaveBlock1Ptr);
-  // int temp = sizeof(gSaveBlock1Ptr->roamerOLD);
-  // return temp;
-  //   return saveRoamers[index].level;
-  return roamerHistories[index].sRoamerLocation.map_number;
+    return roamerHistories[index].sRoamerLocation.map_number;
 }

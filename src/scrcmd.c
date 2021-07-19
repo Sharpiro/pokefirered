@@ -2264,8 +2264,6 @@ bool8 ScrCmd_setmonmetlocation(struct ScriptContext * ctx)
 bool8 ScrCmd_debug(struct ScriptContext *ctx)
 {
     u16 first_var = ScriptReadHalfword(ctx);
-
     gSpecialVar_Result = GetRoamerMapNumber(first_var);
-
     return FALSE;
 }
