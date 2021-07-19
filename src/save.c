@@ -16,8 +16,6 @@
 // Divide save blocks into individual chunks to be written to flash sectors
 
 // Each 4 KiB flash sector contains 3968 bytes of actual data followed by a 128 byte footer
-#define SECTOR_DATA_SIZE 4084
-#define SECTOR_FOOTER_SIZE 12
 
 /*
  * Sector Layout:

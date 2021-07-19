@@ -364,7 +364,7 @@ u16 GetRoamerLocationMapSectionId(u16 species)
     return Overworld_GetMapHeaderByGroupAndId(roamerLoc->group_number, roamerLoc->map_number)->regionMapSectionId;
 }
 
-u16 GetRoamerMapNumber(u8 index)
+u16 GetRoamerMapNumber(u16 index)
 {
   // return roamerHistories[index].sRoamerLocation.group_number;
   // return gSaveBlock2Ptr->usless_data5;
@@ -372,13 +372,6 @@ u16 GetRoamerMapNumber(u8 index)
   // int temp = sizeof(*gSaveBlock1Ptr);
   // int temp = sizeof(gSaveBlock1Ptr->roamerOLD);
   // return temp;
-  return saveRoamers[index].level;
-  // return roamerHistories[index].sRoamerLocation.map_number;
+  //   return saveRoamers[index].level;
+  return roamerHistories[index].sRoamerLocation.map_number;
 }
-
-#define actual_size_5 15860
-#define actual_size_6 15888
-#define max_size 15872
-#define max_size_fixed 16336
-
-const int temp = sizeof(struct Roamer);

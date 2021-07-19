@@ -285,12 +285,6 @@
 	.2byte \a
 	.endm
 
-	@ debug
-	.macro debug value:req
-	.byte 0xd5
-	.2byte \value
-	.endm
-
 	@ Compares a to 1.
 	.macro checkflag a:req
 	.byte 0x2b
