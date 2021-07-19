@@ -36,7 +36,7 @@
 #include "constants/event_objects.h"
 // todo: move somewhere more logical?
 #include "constants/species.h"
-#include "roamer.h";
+#include "roamer.h"
 
 extern u16 (*const gSpecials[])(void);
 extern u16 (*const gSpecialsEnd[])(void);
@@ -2264,25 +2264,6 @@ bool8 ScrCmd_setmonmetlocation(struct ScriptContext * ctx)
 bool8 ScrCmd_debug(struct ScriptContext *ctx)
 {
     u16 first_var = ScriptReadHalfword(ctx);
-
-    // // 18 bytes, should be 20
-    // const int const_y = sizeof(struct QuestLogObjectEvent);
-    // // missing 32 bytes, should be 1640
-    // const int const_x = sizeof(struct QuestLog);
-    // // 34 bytes, missing 2 bytes, should be 36
-    // const int const_x = sizeof(struct MailStruct);
-
-    // 64 bytes, overage 0 bytes, should be 64
-    const int const_x = sizeof(struct FameCheckerSaveData);
-
-    const int const_save_size = sizeof(struct SaveBlock1);
-    if (first_var == 0)
-    {
-        gSpecialVar_Result = sizeof(*gSaveBlock1Ptr);
-    }
-    else
-    {
-        gSpecialVar_Result = const_save_size;
-    }
+    gSpecialVar_Result = GetRoamerMapNumber(first_var);
     return FALSE;
 }

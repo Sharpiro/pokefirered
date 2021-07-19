@@ -24,4 +24,5 @@ Route1_Text_CanJumpFromLedges:: @ 81833B9
 
 Route1_Text_RouteSign:: @ 818343A
     .string "{STR_VAR_1} - {STR_VAR_2} - {STR_VAR_3}$"
+    @.string "{STR_VAR_1}$"
 

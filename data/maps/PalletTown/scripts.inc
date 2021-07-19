@@ -409,10 +409,12 @@ PalletTown_EventScript_FatMan:: @ 816582F
 PalletTown_EventScript_OaksLabSign:: @ 8165838
 	lockall
 	famechecker FAMECHECKER_OAK, 0
-	debug 0
+	debug 3
 	getnumberstring 0, VAR_RESULT
-	debug 1
+	debug 4
 	getnumberstring 1, VAR_RESULT
+	debug 5
+	getnumberstring 2, VAR_RESULT
 	msgbox PalletTown_Text_OakPokemonResearchLab
 	releaseall
 	end

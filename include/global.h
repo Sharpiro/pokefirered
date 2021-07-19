@@ -119,6 +119,8 @@ extern u8 gStringVar4[];
 #define DEX_FLAGS_NO (ROUND_BITS_TO_BYTES(NUM_SPECIES))
 #define NUM_FLAG_BYTES (ROUND_BITS_TO_BYTES(FLAGS_COUNT))
 
+#define STATIC_ASSERT(COND, MSG) typedef char static_assertion_##MSG[(COND) ? 1 : -1]
+
 struct Coords8
 {
     s8 x;
@@ -787,7 +789,8 @@ struct ExternalEventFlags
 } __attribute__((packed));/*size = 0x15*/
 
 #define UNION_ROOM_KB_ROW_COUNT 10
-#define ROAMER_SPECIES_COUNT 3
+
+#define ROAMER_SPECIES_COUNT 6
 
 struct SaveBlock1
 {
@@ -854,6 +857,14 @@ struct SaveBlock1
     /*0x3D38*/ struct TrainerTower trainerTower[NUM_TOWER_CHALLENGE_TYPES];
     /*0x....*/ struct Roamer roamers[ROAMER_SPECIES_COUNT];
 }; // size: 0x3D68
+
+#define SECTOR_DATA_SIZE 4084
+#define SECTOR_FOOTER_SIZE 12
+#define SAVEBLOCK1_MAX_SIZE (SECTOR_DATA_SIZE * 4)
+#define SAVEBLOCK1_EXPECTED_SIZE 15888
+#define SAVEBLOCK1_ACTUAL_SIZE sizeof(struct SaveBlock1)
+
+STATIC_ASSERT(SAVEBLOCK1_ACTUAL_SIZE == SAVEBLOCK1_EXPECTED_SIZE, save_block_1_size);
 
 struct MapPosition
 {

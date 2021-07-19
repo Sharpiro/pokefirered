@@ -94,15 +94,17 @@
 
 ## todo
 
-- release all 3 dogs as roamers
-  - ~~test `UpdateRoamerHPStatus`~~
-  - ~~test `SetRoamerInactive`~~
-  - ~~add raikou's current location to a sign~~
-  - test removing original roamer prop from save block
-- release all 3 fr/lg starters as roamers
 - release all 3 g/s/c starters as roamers
 - L2 view temp vars in memory
 - gary should choose random
 - remove time played
 
 ## done
+
+- ~~release all 3 dogs as roamers~~
+  - ~~test `UpdateRoamerHPStatus`~~
+  - ~~test `SetRoamerInactive`~~
+  - ~~add raikou's current location to a sign~~
+  - ~~test removing original roamer prop from save block~~
+- add static save block size assertion
+- ~~release all 3 fr/lg starters as roamers~~
