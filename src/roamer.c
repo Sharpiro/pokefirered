@@ -127,7 +127,7 @@ void InitRoamer(void)
     CreateInitialRoamerMons();
 }
 
-static void UpdateLocationHistoryForRoamer(RoamerLocation *sLocationHistory)
+static void UpdateLocationHistoryForRoamer(RoamerLocation sLocationHistory[])
 { 
    sLocationHistory[2].group_number = sLocationHistory[1].group_number;
    sLocationHistory[2].map_number = sLocationHistory[1].map_number;
