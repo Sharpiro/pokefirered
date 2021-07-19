@@ -5,12 +5,12 @@
 
 // Each 4 KiB flash sector contains 3968 bytes of actual data followed by a 128 byte footer.
 // Only 12 bytes of the footer are used.
-#define SECTOR_DATA_SIZE 3968
-#define SECTOR_FOOTER_SIZE 128
+#define SECTOR_DATA_SIZE 4084
+#define SECTOR_FOOTER_SIZE 12
 #define SECTOR_SIZE (SECTOR_DATA_SIZE + SECTOR_FOOTER_SIZE)
 
 #define SAVEBLOCK1_MAX_SIZE (SECTOR_DATA_SIZE * 4)
-#define SAVEBLOCK1_EXPECTED_SIZE 15720
+#define SAVEBLOCK1_EXPECTED_SIZE 15888
 #define SAVEBLOCK1_ACTUAL_SIZE sizeof(struct SaveBlock1)
 
 STATIC_ASSERT(SAVEBLOCK1_ACTUAL_SIZE == SAVEBLOCK1_EXPECTED_SIZE, save_block_1_size);

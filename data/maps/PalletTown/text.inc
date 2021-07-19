@@ -22,7 +22,7 @@ PalletTown_Text_CanStoreItemsAndMonsInPC::
 
 PalletTown_Text_OakPokemonResearchLab::
     @.string "OAK POKéMON RESEARCH LAB$"
-    .string "{STR_VAR_1} {STR_VAR_2}$"
+    .string "{STR_VAR_1} {STR_VAR_2} {STR_VAR_3}$"
 
 PalletTown_Text_PlayersHouse::
     .string "{PLAYER}'s house$"

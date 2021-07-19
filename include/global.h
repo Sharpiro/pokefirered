@@ -132,8 +132,8 @@ extern u8 gStringVar4[];
 #define NUM_ADDITIONAL_PHRASE_BYTES ROUND_BITS_TO_BYTES(NUM_ADDITIONAL_PHRASES)
 
 // This produces an error at compile-time if expr is zero.
-// It looks like file.c:line: size of array `id' is negative
-#define STATIC_ASSERT(expr, id) typedef char id[(expr) ? 1 : -1];
+// It looks like file.c:line: size of array `static_assertion_id' is negative
+#define STATIC_ASSERT(COND, MSG) typedef char static_assertion_##MSG[(COND) ? 1 : -1]
 
 struct Coords8
 {
@@ -747,7 +747,7 @@ struct ExternalEventFlags
 
 } __attribute__((packed));/*size = 0x15*/
 
-#define ROAMER_SPECIES_COUNT 3
+#define ROAMER_SPECIES_COUNT 6
 
 struct SaveBlock1
 {

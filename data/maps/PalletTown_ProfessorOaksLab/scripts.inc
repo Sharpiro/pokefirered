@@ -1286,7 +1286,8 @@ PalletTown_ProfessorOaksLab_EventScript_Aide3::
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_Pokedex::
-	msgbox PalletTown_ProfessorOaksLab_Text_BlankEncyclopedia, MSGBOX_NPC
+	@msgbox PalletTown_ProfessorOaksLab_Text_BlankEncyclopedia, MSGBOX_NPC
+	goto PalletTown_Release_Dogs
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_Computer::

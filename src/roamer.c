@@ -27,9 +27,24 @@ typedef struct RoamerInfo
   RoamerHistory *roamerHistory;
 } RoamerInfo;
 
-static EWRAM_DATA RoamerHistory roamerHistories[ROAMER_SPECIES_COUNT] = {};
+typedef struct RoamerType
+{
+  u16 species;
+  u8 level;
+  bool8 random;
+} RoamerType;
 
-const u16 roamer_types[ROAMER_SPECIES_COUNT] = {SPECIES_ENTEI, SPECIES_SUICUNE, SPECIES_RAIKOU};
+const RoamerType roamer_types[ROAMER_SPECIES_COUNT] = 
+{
+  {.species = SPECIES_ENTEI, .level = 50},
+  {.species = SPECIES_SUICUNE, .level = 50},
+  {.species = SPECIES_RAIKOU, .level = 50},
+  {.species = SPECIES_BULBASAUR, .level = 5, .random = TRUE},
+  {.species = SPECIES_SQUIRTLE, .level = 5, .random = TRUE},
+  {.species = SPECIES_CHARMANDER, .level = 5, .random = TRUE}
+};
+
+static EWRAM_DATA RoamerHistory roamerHistories[ROAMER_SPECIES_COUNT] = {};
 
 /** somehow prevents roamer pointer from dying */
 #define saveRoamers (*(&gSaveBlock1Ptr->roamers))
@@ -103,11 +118,13 @@ static void CreateInitialRoamerMons()
 
   u8 i;
   for (i = 0; i < ROAMER_SPECIES_COUNT; i++){
+    RoamerType roamer_type = roamer_types[i];
+
     tmpMon = &gEnemyParty[0];
-    CreateMon(tmpMon, roamer_types[i], 50, 0x20, 0, 0, 0, 0);
+    CreateMon(tmpMon, roamer_type.species, roamer_type.level, 0x20, 0, 0, 0, 0);
     tmpRoamer = &saveRoamers[i];
-    tmpRoamer->species = roamer_types[i];
-    tmpRoamer->level = 50;
+    tmpRoamer->species = roamer_type.species;
+    tmpRoamer->level = roamer_type.level;
     tmpRoamer->status = 0;
     tmpRoamer->active = TRUE;
     tmpRoamer->ivs = GetMonData(tmpMon, MON_DATA_IVS);
@@ -129,7 +146,7 @@ void InitRoamer(void)
     CreateInitialRoamerMons();
 }
 
-static void UpdateLocationHistoryForRoamer(RoamerLocation *sLocationHistory)
+static void UpdateLocationHistoryForRoamer(RoamerLocation sLocationHistory[3])
 { 
    sLocationHistory[2].group_number = sLocationHistory[1].group_number;
    sLocationHistory[2].map_number = sLocationHistory[1].map_number;
@@ -291,7 +308,7 @@ static struct RoamerInfo get_roamer_by_species(u16 monSpecies)
 
     u8 i;
     for (i = 0; i < ROAMER_SPECIES_COUNT; i++){
-      if (monSpecies == roamer_types[i]){
+      if (monSpecies == roamer_types[i].species){
         roamerInfo = get_roamer_by_index(i);
         break;
       }
@@ -380,5 +397,5 @@ u16 GetRoamerLocationMapSectionId(u16 species)
 
 u8 GetRoamerMapNumber(u8 index)
 {
-  return roamerHistories[index].sRoamerLocation.map_number;
+    return roamerHistories[index].sRoamerLocation.map_number;
 }
