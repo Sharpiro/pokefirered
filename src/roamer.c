@@ -49,10 +49,6 @@ static EWRAM_DATA RoamerHistory roamerHistories[ROAMER_SPECIES_COUNT] = {};
 /** somehow prevents roamer pointer from dying */
 #define saveRoamers (*(&gSaveBlock1Ptr->roamers))
 
-#define ROAMER (&gSaveBlock1Ptr->roamer)
-EWRAM_DATA u8 sLocationHistory[3][2] = {};
-EWRAM_DATA u8 sRoamerLocation[2] = {};
-
 #define ___ MAP_NUM(UNDEFINED) // For empty spots in the location table
 
 // Note: There are two potential softlocks that can occur with this table if its maps are
@@ -105,7 +101,6 @@ void ClearRoamerData(void)
     u8 i;
     for (i = 0; i < ROAMER_SPECIES_COUNT; i++)
     {
-      //*ROAMER = (struct Roamer){};
       gSaveBlock1Ptr->roamers[i] = (struct Roamer){};
       roamerHistories[i] = (RoamerHistory){};
     }
@@ -239,7 +234,6 @@ static void RoamerMove(RoamerInfo *roamerInfo)
                     // Choose a new map (excluding the first) within this set
                     // Also exclude a map if the roamer was there 2 moves ago
                     mapNum = sRoamerLocations[locSet][(Random() % (NUM_LOCATIONS_PER_SET - 1)) + 1];
-                    // mapNum = sRoamerLocations[locSet][(Random() % 6) + 1];
                     oldestGroup = roamerInfo->roamerHistory->sLocationHistory[2].group_number;
                     oldestMap = roamerInfo->roamerHistory->sLocationHistory[2].map_number;
                     //if (!(sLocationHistory[2][MAP_GRP] == ROAMER_MAP_GROUP
@@ -288,12 +282,13 @@ static void CreateRoamerMonInstance(struct Roamer *roamer)
     CreateMonWithIVsPersonality(mon, roamer->species, roamer->level, roamer->ivs, roamer->personality);
 // The roamer's status field is u8, but SetMonData expects status to be u32, so will set the roamer's status
 // using the status field and the following 3 bytes (cool, beauty, and cute).
-#if defined(BUGFIX) || IV_BUGFIX == TRUE
-    status = ROAMER->status;
-    SetMonData(mon, MON_DATA_STATUS, &status);
-#else
+// #if defined(BUGFIX) || IV_BUGFIX == TRUE
+//     status = ROAMER->status;
+//     SetMonData(mon, MON_DATA_STATUS, &status);
+// #else
+//     SetMonData(mon, MON_DATA_STATUS, &roamer->status);
+// #endif
     SetMonData(mon, MON_DATA_STATUS, &roamer->status);
-#endif
     SetMonData(mon, MON_DATA_HP, &roamer->hp);
     SetMonData(mon, MON_DATA_COOL, &roamer->cool);
     SetMonData(mon, MON_DATA_BEAUTY, &roamer->beauty);
