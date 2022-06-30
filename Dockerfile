@@ -25,4 +25,4 @@ RUN sh build.sh
 RUN sh install.sh ../pokefirered 
 WORKDIR /app/pokefirered
 
-CMD make -j8
+CMD make -j8 DINFO=1
