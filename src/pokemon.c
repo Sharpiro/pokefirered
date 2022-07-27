@@ -1392,7 +1392,11 @@ static const s8 sNatureStatTable[NUM_NATURES][NUM_NATURE_STATS] =
 #include "data/pokemon/experience_tables.h"
 #include "data/pokemon/species_info.h"
 #include "data/pokemon/level_up_learnsets.h"
+#if FIX_POKEMON_EVOLUTIONS
+#include "data/pokemon/evolution_fixed.h"
+#else
 #include "data/pokemon/evolution.h"
+#endif
 #include "data/pokemon/level_up_learnset_pointers.h"
 
 static const s8 sPokeblockFlavorCompatibilityTable[NUM_NATURES * FLAVOR_COUNT] =
