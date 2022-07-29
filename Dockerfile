@@ -22,7 +22,9 @@ RUN git clone https://github.com/pret/agbcc
 
 WORKDIR /app/agbcc
 RUN sh build.sh
-RUN sh install.sh ../pokefirered 
-WORKDIR /app/pokefirered
 
-CMD make -j8 DINFO=1
+CMD ./install.sh ../pokefirered > /dev/null \
+    && cd ../pokefirered \
+    # `DINFO` can change checksums!
+    # && make -j8 DINFO=1
+    && make -j8
