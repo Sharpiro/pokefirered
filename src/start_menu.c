@@ -439,6 +439,7 @@ static bool8 StartCB_HandleInput(void)
         DestroySafariZoneStatsWindow();
         DestroyHelpMessageWindow_();
         CloseStartMenu();
+        DebugPrint((const u8[]) _("Play Time:"), 2, gSaveBlock2Ptr->playTimeHours, gSaveBlock2Ptr->playTimeMinutes);
         return TRUE;
     }
     return FALSE;
