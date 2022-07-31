@@ -404,6 +404,7 @@ void ShowStartMenu(void)
     LockPlayerFieldControls();
 }
 
+extern void DebugPrint(const u8 *buffer, int count, ...);
 static bool8 StartCB_HandleInput(void)
 {
     if (JOY_NEW(DPAD_UP))
