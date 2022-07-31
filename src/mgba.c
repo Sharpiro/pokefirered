@@ -23,11 +23,17 @@
 #include <stdarg.h>
 #include "gba/types.h"
 #include "gba/defines.h"
-#include "mgba_printf/mgba.h"
-#include "mgba_printf/mini_printf.h"
-#include "characters.h"
+#include "mgba.h"
+#include "mini_printf.h"
+#include "text.h"
 #include "string_util.h"
 #include "malloc.h"
+
+#define CHAR_LESS_THAN 0x85
+#define CHAR_GREATER_THAN 0x86
+#define CHAR_PERCENT 0x5B
+#define CHAR_LEFT_PAREN 0x5C
+#define CHAR_RIGHT_PAREN 0x5D
 
 #define REG_DEBUG_ENABLE ((vu16*) (0x4FFF780))
 #define REG_DEBUG_FLAGS  ((vu16*) (0x4FFF700))
@@ -35,7 +41,6 @@
 
 #define PRINTF_BUFFER_SIZE (4096)
 
-static u32 MgbaConvertPStringToAsciiN(const char *src, char *dst, u32 n);
 static void MgbaPrintfBounded(s32 level, const char* ptr, ...);
 
 /*
@@ -43,7 +48,7 @@ static void MgbaPrintfBounded(s32 level, const char* ptr, ...);
  * Be careful not to overflow!
  * Failed ASSERTIONS for buffers != NULL will halt the program!
  */
-static u32 MgbaConvertPStringToAsciiN(const char *src, char *dst, u32 n)
+u32 MgbaConvertPStringToAsciiN(const char *src, char *dst, u32 n)
 {
     s32 i;
 
@@ -67,9 +72,9 @@ static u32 MgbaConvertPStringToAsciiN(const char *src, char *dst, u32 n)
             modifiedCode = '?'; // question mark
         else if (*src == CHAR_PERIOD)
             modifiedCode = '.'; // period
-        else if (*src == CHAR_DBL_QUOTE_LEFT || *src == CHAR_DBL_QUOTE_RIGHT)
+        else if (*src == CHAR_DBL_QUOT_LEFT || *src == CHAR_DBL_QUOT_RIGHT)
             modifiedCode = '"'; // double quote
-        else if (*src == CHAR_SGL_QUOTE_LEFT || *src == CHAR_SGL_QUOTE_RIGHT)
+        else if (*src == CHAR_SGL_QUOT_LEFT || *src == CHAR_SGL_QUOT_RIGHT)
             modifiedCode = '\''; // single quote
         else if (*src == CHAR_CURRENCY)
             modifiedCode = '$'; // currency mark (pokemonies in game, dollar sign in logs)

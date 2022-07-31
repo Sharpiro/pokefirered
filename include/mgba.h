@@ -42,6 +42,7 @@ bool8 MgbaOpen(void);
 void MgbaClose(void);
 void MgbaAssert(const char *pFile, s32 nLine, const char *pExpression, bool32 nStopProgram);
 void MgbaPrintEncoded(s32 level, const char *encodedString);
+u32 MgbaConvertPStringToAsciiN(const char *src, char *dst, u32 n);
 
 #define MGBA_ASSERT(exp) (exp) ? ((void*)0) : MgbaAssert(__FILE__, __LINE__, #exp, 1);
 #define MGBA_WARNING(exp) (exp) ? ((void*)0) : MgbaAssert(__FILE__, __LINE__, #exp, 0);

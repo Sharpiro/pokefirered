@@ -29,24 +29,25 @@
 
 /*
  * Courtey of https://github.com/mludvig/mini-printf
- * stripped to reduce file size for agb needs
+ * stripped to reduce file size for mgba_printf needs
  */
 
 #ifndef __MINI_PRINTF__
 #define __MINI_PRINTF__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdarg.h>
 #include "gba/types.h"
 
-#ifdef NDEBUG
-
-#define mini_vsnprintf(buffer, buffer_len, fmt, va)
-#define mini_vpprintf(buf, fmt, va)
-
-#else
-
 s32 mini_vsnprintf(char* buffer, u32 buffer_len, const char *fmt, va_list va);
-s32 mini_vpprintf(void* buf, const char *fmt, va_list va);
+/* s32 mini_vpprintf(void* buf, const char *fmt, va_list va); */
+s32 mini_vpprintf(int (*puts)(char* s, s32 len, void* buf), void* buf, const char *fmt, va_list va);
 
+#ifdef __cplusplus
+}
 #endif
+
 #endif

@@ -16,6 +16,8 @@
 #include "constants/maps.h"
 #include "constants/abilities.h"
 #include "constants/items.h"
+#include "mgba.h"
+#include "data.h"
 
 #define MAX_ENCOUNTER_RATE 1600
 
@@ -227,9 +229,14 @@ static void GenerateWildMon(u16 species, u8 level, u8 slot)
 {
     u32 personality;
     s8 chamber;
+    char poke_ascii[20];
     ZeroEnemyPartyMons();
     if (species != SPECIES_UNOWN)
     {
+        MgbaPrintf(MGBA_LOG_WARN, "species number: %d", species);
+        MgbaConvertPStringToAsciiN(gSpeciesNames[species], poke_ascii, 11);
+        MgbaPrintf(MGBA_LOG_WARN, "species: %s", poke_ascii);
+        MgbaPrintEncoded(MGBA_LOG_WARN, gSpeciesNames[species]);
         CreateMonWithNature(&gEnemyParty[0], species, level, USE_RANDOM_IVS, Random() % NUM_NATURES);
     }
     else

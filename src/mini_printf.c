@@ -25,22 +25,30 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * ----
+ *
+ * This is a minimal snprintf() implementation optimised
+ * for embedded systems with a very limited program memory.
+ * mini_snprintf() doesn't support _all_ the formatting
+ * the glibc does but on the other hand is a lot smaller.
+ * Here are some numbers from my STM32 project (.bin file size):
+ *      no snprintf():      10768 bytes
+ *      mini snprintf():    11420 bytes     (+  652 bytes)
+ *      glibc snprintf():   34860 bytes     (+24092 bytes)
+ * Wasting nearly 24kB of memory just for snprintf() on
+ * a chip with 32kB flash is crazy. Use mini_snprintf() instead.
+ *
  */
 
 /*
  * mini-printf courtesy of https://github.com/mludvig/mini-printf
- * stripped to reduce file size for agb needs
+ * stripped to reduce file size for mgba_printf needs
  */
 
 #include "mini_printf.h"
 #include "gba/types.h"
 #include "gba/defines.h"
-#include "config.h"
-#include "characters.h"
-#include "string_util.h"
-
-#ifndef NDEBUG
-#if (PRETTY_PRINT_HANDLER != PRETTY_PRINT_OFF)
 
 struct mini_buff 
 {
@@ -48,49 +56,7 @@ struct mini_buff
     u32 buffer_len;
 };
 
-static inline char mini_pchar_decode(char encoded)
-{
-    char ret = '?';
-    if (encoded >= CHAR_a && encoded <= CHAR_z)
-        ret = encoded-(CHAR_a-'a'); // lower-case characters
-    else if (encoded >= CHAR_A && encoded <= CHAR_Z)
-        ret = encoded-(CHAR_A-'A'); // upper-case characters
-    else if (encoded >= CHAR_0 && encoded <= CHAR_9)
-        ret = encoded-(CHAR_0-'0'); // numbers
-    else if (encoded == CHAR_SPACE)
-        ret = ' '; // space
-    else if (encoded == CHAR_EXCL_MARK)
-        ret = '!'; // exclamation point
-    else if (encoded == CHAR_QUESTION_MARK)
-        ret = '?'; // question mark
-    else if (encoded == CHAR_PERIOD)
-        ret = '.'; // period
-    else if (encoded == CHAR_DBL_QUOTE_LEFT || encoded == CHAR_DBL_QUOTE_RIGHT)
-        ret = '"'; // double quote
-    else if (encoded == CHAR_SGL_QUOTE_LEFT || encoded == CHAR_SGL_QUOTE_RIGHT)
-        ret = '\''; // single quote
-    else if (encoded == CHAR_CURRENCY)
-        ret = '$'; // currency mark (pokemonies in game, dollar sign in logs)
-    else if (encoded == CHAR_COMMA)
-        ret = ','; // comma
-    else if (encoded == CHAR_MULT_SIGN)
-        ret = '#'; // pound, hashtag, octothorpe, whatever
-    else if (encoded == CHAR_SLASH)
-        ret = '/'; // slash
-    else if (encoded == CHAR_LESS_THAN)
-        ret = '<'; // less than sign
-    else if (encoded == CHAR_GREATER_THAN)
-        ret = '>'; // greater than sign
-    else if (encoded == CHAR_PERCENT)
-        ret = '%'; // percentage
-    else if (encoded == CHAR_LEFT_PAREN)
-        ret = '('; // opening parentheses
-    else if (encoded == CHAR_RIGHT_PAREN)
-        ret = ')'; // closing parentheses
-    return ret;
-}
-
-static s32 _putsAscii(char *s, s32 len, void *buf)
+static s32 _puts(char *s, s32 len, void *buf)
 {
     char *p0;
     s32 i;
@@ -98,7 +64,7 @@ static s32 _putsAscii(char *s, s32 len, void *buf)
 
     if (!buf) 
         return len;
-
+    
     b = buf;
     p0 = b->buffer;
 
@@ -113,37 +79,14 @@ static s32 _putsAscii(char *s, s32 len, void *buf)
     return b->pbuffer - p0;
 }
 
-static s32 _putsEncoded(char *s, s32 len, void *buf)
-{
-    char *p0;
-    s32 i;
-    struct mini_buff *b;
-
-    if (!buf) 
-        return len;
-
-    b = buf;
-    p0 = b->buffer;
-
-    /* Copy to buffer */
-    for (i = 0; i < len; i++) {
-        if(b->pbuffer == b->buffer + b->buffer_len - 1) {
-            break;
-        }
-        *(b->pbuffer ++) = mini_pchar_decode(s[i]);
-    }
-    *(b->pbuffer) = 0;
-    return b->pbuffer - p0;
-}
-
 static s32 mini_strlen(const char *s)
 {
-    s32 len = 0;
-    while (s[len] != '\0') len++;
-    return len;
+	s32 len = 0;
+	while (s[len] != '\0') len++;
+	return len;
 }
 
-static s32 mini_itoa(s32 value, u32 radix, s32 uppercase, bool32 unsig, char *buffer)
+static s32 mini_itoa(u32 value, u32 radix, s32 uppercase, bool32 unsig, char *buffer)
 {
     char *pbuffer = buffer;
     s32 negative = 0;
@@ -224,18 +167,23 @@ s32 mini_vsnprintf(char *buffer, u32 buffer_len, const char *fmt, va_list va)
     b.buffer_len = buffer_len;
     if (buffer_len == 0)
         buffer = NULL;
-    n = mini_vpprintf((buffer != NULL) ? &b : NULL, fmt, va);
+    n = mini_vpprintf(_puts, (buffer != NULL) ? &b : NULL, fmt, va);
     if (buffer == NULL)
         return n;
     return b.pbuffer - b.buffer;
 }
 
-s32 mini_vpprintf(void* buf, const char *fmt, va_list va)
+s32 mini_vpprintf(s32 (*puts)(char* s, s32 len, void* buf), void* buf, const char *fmt, va_list va)
 {
     char bf[24];
     char bf2[24];
     char ch;
     s32 n;
+    if(puts == NULL)
+    {
+        /* run puts in counting mode. */
+        puts = _puts; buf = NULL;
+    }
     n = 0;
     while ((ch=*(fmt++)))
     {
@@ -243,7 +191,7 @@ s32 mini_vpprintf(void* buf, const char *fmt, va_list va)
         if (ch != '%')
         {
             len = 1;
-            len = _putsAscii(&ch, len, buf);
+            len = puts(&ch, len, buf);
         } else 
         {
             char pad_char = ' ';
@@ -292,7 +240,7 @@ s32 mini_vpprintf(void* buf, const char *fmt, va_list va)
                         }
                     }
                     len = mini_pad(bf2, len, pad_char, pad_to, bf);
-                    len = _putsAscii(bf, len, buf);
+                    len = puts(bf, len, buf);
                     break;
 
                 case 'x':
@@ -306,13 +254,13 @@ s32 mini_vpprintf(void* buf, const char *fmt, va_list va)
                         len = mini_itoa((u32) va_arg(va, u32), 16, (ch=='X'), 1, bf2);
                     }
                     len = mini_pad(bf2, len, pad_char, pad_to, bf);
-                    len = _putsAscii(bf, len, buf);
+                    len = puts(bf, len, buf);
                     break;
 
                 case 'c' :
                     ch = (char)(va_arg(va, s32));
                     len = mini_pad(&ch, 1, pad_char, pad_to, bf);
-                    len = _putsAscii(bf, len, buf);
+                    len = puts(bf, len, buf);
                     break;
 
                 case 's' :
@@ -321,27 +269,15 @@ s32 mini_vpprintf(void* buf, const char *fmt, va_list va)
                     if (pad_to > 0)
                     {
                         len = mini_pad(ptr, len, pad_char, pad_to, bf);
-                        len = _putsAscii(bf, len, buf);
+                        len = puts(bf, len, buf);
                     } else
                     {
-                        len = _putsAscii(ptr, len, buf);
-                    }
-                    break;
-                case 'S' : // preproc encoded string handler
-                    ptr = va_arg(va, char*);
-                    len = StringLength(ptr);
-                    if (pad_to > 0)
-                    {
-                        len = mini_pad(ptr, len, pad_char, pad_to, bf);
-                        len = _putsEncoded(bf, len, buf);
-                    } else
-                    {
-                        len = _putsEncoded(ptr, len, buf);
+                        len = puts(ptr, len, buf);
                     }
                     break;
                 default:
                     len = 1;
-                    len = _putsAscii(&ch, len, buf);
+                    len = puts(&ch, len, buf);
                     break;
             }
         }
@@ -350,6 +286,3 @@ s32 mini_vpprintf(void* buf, const char *fmt, va_list va)
 end:
     return n;
 }
-
-#endif
-#endif
