@@ -2574,8 +2574,9 @@ void CodeDebugPrintTask(u8 taskId)
         DestroyTask(taskId);
     }
 }
-const u8 gText_Comma[] = _(",");
-extern const u8 gText_Space[];
+// const u8 gText_Comma[] = _(",");
+// todo: not available in FR and unknown purpose
+// extern const u8 gText_Space[];
 void DebugPrint(const u8 *buffer, int count, ...)
 {
     va_list args;
@@ -2586,7 +2587,7 @@ void DebugPrint(const u8 *buffer, int count, ...)
 
     StringCopy(gStringVar3, buffer);
     StringExpandPlaceholders(gStringVar4, gStringVar3);//If you don't need to expand thigns like {PLAYER} or {COLOR}, then you can remove this and the next line, and just copy gStringVar3 to gStringVar4.
-    StringAppend(gStringVar4, gText_Space);
+    // StringAppend(gStringVar4, gText_Space);
     va_start(args, count);
     for (i = 0; i < count; i++) //this loop adds each supplied variable to the end of the printed string.
     {
@@ -2594,14 +2595,18 @@ void DebugPrint(const u8 *buffer, int count, ...)
         StringAppend(gStringVar4, gStringVar3);
         if (i != (count - 1))
         {
+            // StringAppend(gStringVar4, ",");
+            u8 gText_Comma[] = _(",");
+            // u8 gText_Comma_temp[] = ",";
             StringAppend(gStringVar4, gText_Comma);
-            StringAppend(gStringVar4, gText_Space);
+            // StringAppend(gStringVar4, _(","));
+            // StringAppend(gStringVar4, gText_Space);
         }
     }
     va_end(args);
 
 
-    SetWindowTemplateFields(&template, 0, 1, 1, 20, 2, 15, 100);
+    template = SetWindowTemplateFields(0, 1, 1, 20, 2, 15, 100);
     tDebuggingWindow = AddWindow(&template);
     FillWindowPixelBuffer(tDebuggingWindow, 0);
     PutWindowTilemap(tDebuggingWindow);
