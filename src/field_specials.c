@@ -2574,7 +2574,6 @@ void CodeDebugPrintTask(u8 taskId)
         DestroyTask(taskId);
     }
 }
-// const u8 gText_Comma[] = _(",");
 // todo: not available in FR and unknown purpose
 // extern const u8 gText_Space[];
 void DebugPrint(const u8 *buffer, int count, ...)
@@ -2595,11 +2594,8 @@ void DebugPrint(const u8 *buffer, int count, ...)
         StringAppend(gStringVar4, gStringVar3);
         if (i != (count - 1))
         {
-            // StringAppend(gStringVar4, ",");
-            u8 gText_Comma[] = _(",");
-            // u8 gText_Comma_temp[] = ",";
+            const u8 gText_Comma[] = _(",");
             StringAppend(gStringVar4, gText_Comma);
-            // StringAppend(gStringVar4, _(","));
             // StringAppend(gStringVar4, gText_Space);
         }
     }
