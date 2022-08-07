@@ -38,27 +38,52 @@ const struct Evolution gEvolutionTable[NUM_SPECIES][EVOS_PER_MON] =
     [SPECIES_GROWLITHE]  = {{EVO_ITEM, ITEM_FIRE_STONE, SPECIES_ARCANINE}},
     [SPECIES_POLIWAG]    = {{EVO_LEVEL, 25, SPECIES_POLIWHIRL}},
     [SPECIES_POLIWHIRL]  = {{EVO_ITEM, ITEM_WATER_STONE, SPECIES_POLIWRATH},
+                            #if FIX_POKEMON_EVOLUTIONS
+                            {EVO_ITEM, ITEM_KINGS_ROCK, SPECIES_POLITOED}},
+                            #else
                             {EVO_TRADE_ITEM, ITEM_KINGS_ROCK, SPECIES_POLITOED}},
+                            #endif
     [SPECIES_ABRA]       = {{EVO_LEVEL, 16, SPECIES_KADABRA}},
+                            #if FIX_POKEMON_EVOLUTIONS
+    [SPECIES_KADABRA]    = {{EVO_LEVEL, 33, SPECIES_ALAKAZAM}},
+                            #else
     [SPECIES_KADABRA]    = {{EVO_TRADE, 0, SPECIES_ALAKAZAM}},
+                            #endif
     [SPECIES_MACHOP]     = {{EVO_LEVEL, 28, SPECIES_MACHOKE}},
+                            #if FIX_POKEMON_EVOLUTIONS
+    [SPECIES_MACHOKE]    = {{EVO_LEVEL, 45, SPECIES_MACHAMP}},
+                            #else
     [SPECIES_MACHOKE]    = {{EVO_TRADE, 0, SPECIES_MACHAMP}},
+                            #endif
     [SPECIES_BELLSPROUT] = {{EVO_LEVEL, 21, SPECIES_WEEPINBELL}},
     [SPECIES_WEEPINBELL] = {{EVO_ITEM, ITEM_LEAF_STONE, SPECIES_VICTREEBEL}},
     [SPECIES_TENTACOOL]  = {{EVO_LEVEL, 30, SPECIES_TENTACRUEL}},
     [SPECIES_GEODUDE]    = {{EVO_LEVEL, 25, SPECIES_GRAVELER}},
+                            #if FIX_POKEMON_EVOLUTIONS
+    [SPECIES_GRAVELER]   = {{EVO_LEVEL, 42, SPECIES_GOLEM}},
+                            #else
     [SPECIES_GRAVELER]   = {{EVO_TRADE, 0, SPECIES_GOLEM}},
+                            #endif
     [SPECIES_PONYTA]     = {{EVO_LEVEL, 40, SPECIES_RAPIDASH}},
     [SPECIES_SLOWPOKE]   = {{EVO_LEVEL, 37, SPECIES_SLOWBRO},
+                            #if FIX_POKEMON_EVOLUTIONS
+                            {EVO_ITEM, ITEM_KINGS_ROCK, SPECIES_SLOWKING}},
+                            #else
                             {EVO_TRADE_ITEM, ITEM_KINGS_ROCK, SPECIES_SLOWKING}},
+                            #endif
     [SPECIES_MAGNEMITE]  = {{EVO_LEVEL, 30, SPECIES_MAGNETON}},
     [SPECIES_DODUO]      = {{EVO_LEVEL, 31, SPECIES_DODRIO}},
     [SPECIES_SEEL]       = {{EVO_LEVEL, 34, SPECIES_DEWGONG}},
     [SPECIES_GRIMER]     = {{EVO_LEVEL, 38, SPECIES_MUK}},
     [SPECIES_SHELLDER]   = {{EVO_ITEM, ITEM_WATER_STONE, SPECIES_CLOYSTER}},
     [SPECIES_GASTLY]     = {{EVO_LEVEL, 25, SPECIES_HAUNTER}},
+                            #if FIX_POKEMON_EVOLUTIONS
+    [SPECIES_HAUNTER]    = {{EVO_LEVEL, 42, SPECIES_GENGAR}},
+    [SPECIES_ONIX]       = {{EVO_ITEM, ITEM_METAL_COAT, SPECIES_STEELIX}},
+                            #else
     [SPECIES_HAUNTER]    = {{EVO_TRADE, 0, SPECIES_GENGAR}},
     [SPECIES_ONIX]       = {{EVO_TRADE_ITEM, ITEM_METAL_COAT, SPECIES_STEELIX}},
+                            #endif
     [SPECIES_DROWZEE]    = {{EVO_LEVEL, 26, SPECIES_HYPNO}},
     [SPECIES_KRABBY]     = {{EVO_LEVEL, 28, SPECIES_KINGLER}},
     [SPECIES_VOLTORB]    = {{EVO_LEVEL, 30, SPECIES_ELECTRODE}},
@@ -68,17 +93,31 @@ const struct Evolution gEvolutionTable[NUM_SPECIES][EVOS_PER_MON] =
     [SPECIES_RHYHORN]    = {{EVO_LEVEL, 42, SPECIES_RHYDON}},
     [SPECIES_CHANSEY]    = {{EVO_FRIENDSHIP, 0, SPECIES_BLISSEY}},
     [SPECIES_HORSEA]     = {{EVO_LEVEL, 32, SPECIES_SEADRA}},
+                            #if FIX_POKEMON_EVOLUTIONS
+    [SPECIES_SEADRA]     = {{EVO_ITEM, ITEM_DRAGON_SCALE, SPECIES_KINGDRA}},
+                            #else
     [SPECIES_SEADRA]     = {{EVO_TRADE_ITEM, ITEM_DRAGON_SCALE, SPECIES_KINGDRA}},
+                            #endif
     [SPECIES_GOLDEEN]    = {{EVO_LEVEL, 33, SPECIES_SEAKING}},
     [SPECIES_STARYU]     = {{EVO_ITEM, ITEM_WATER_STONE, SPECIES_STARMIE}},
+                            #if FIX_POKEMON_EVOLUTIONS
+    [SPECIES_SCYTHER]    = {{EVO_ITEM, ITEM_METAL_COAT, SPECIES_SCIZOR}},
+                            #else
     [SPECIES_SCYTHER]    = {{EVO_TRADE_ITEM, ITEM_METAL_COAT, SPECIES_SCIZOR}},
+                            #endif
     [SPECIES_MAGIKARP]   = {{EVO_LEVEL, 20, SPECIES_GYARADOS}},
     [SPECIES_EEVEE]      = {{EVO_ITEM, ITEM_THUNDER_STONE, SPECIES_JOLTEON},
                             {EVO_ITEM, ITEM_WATER_STONE, SPECIES_VAPOREON},
                             {EVO_ITEM, ITEM_FIRE_STONE, SPECIES_FLAREON},
+                            #if FIX_POKEMON_EVOLUTIONS
+                            {EVO_ITEM, ITEM_SUN_STONE, SPECIES_ESPEON},
+                            {EVO_ITEM, ITEM_MOON_STONE, SPECIES_UMBREON}},
+    [SPECIES_PORYGON]    = {{EVO_ITEM, ITEM_UP_GRADE, SPECIES_PORYGON2}},
+                            #else
                             {EVO_FRIENDSHIP_DAY, 0, SPECIES_ESPEON},
                             {EVO_FRIENDSHIP_NIGHT, 0, SPECIES_UMBREON}},
     [SPECIES_PORYGON]    = {{EVO_TRADE_ITEM, ITEM_UP_GRADE, SPECIES_PORYGON2}},
+                            #endif
     [SPECIES_OMANYTE]    = {{EVO_LEVEL, 40, SPECIES_OMASTAR}},
     [SPECIES_KABUTO]     = {{EVO_LEVEL, 40, SPECIES_KABUTOPS}},
     [SPECIES_DRATINI]    = {{EVO_LEVEL, 30, SPECIES_DRAGONAIR}},
@@ -171,8 +210,13 @@ const struct Evolution gEvolutionTable[NUM_SPECIES][EVOS_PER_MON] =
     [SPECIES_GULPIN]     = {{EVO_LEVEL, 26, SPECIES_SWALOT}},
     [SPECIES_WHISMUR]    = {{EVO_LEVEL, 20, SPECIES_LOUDRED}},
     [SPECIES_LOUDRED]    = {{EVO_LEVEL, 40, SPECIES_EXPLOUD}},
+                            #if FIX_POKEMON_EVOLUTIONS
+    [SPECIES_CLAMPERL]   = {{EVO_ITEM, ITEM_DEEP_SEA_TOOTH, SPECIES_HUNTAIL},
+                            {EVO_ITEM, ITEM_DEEP_SEA_SCALE, SPECIES_GOREBYSS}},
+                            #else
     [SPECIES_CLAMPERL]   = {{EVO_TRADE_ITEM, ITEM_DEEP_SEA_TOOTH, SPECIES_HUNTAIL},
                             {EVO_TRADE_ITEM, ITEM_DEEP_SEA_SCALE, SPECIES_GOREBYSS}},
+                            #endif
     [SPECIES_SHUPPET]    = {{EVO_LEVEL, 37, SPECIES_BANETTE}},
     [SPECIES_ARON]       = {{EVO_LEVEL, 32, SPECIES_LAIRON}},
     [SPECIES_LAIRON]     = {{EVO_LEVEL, 42, SPECIES_AGGRON}},
