@@ -9,6 +9,12 @@
 #define SECTOR_FOOTER_SIZE 128
 #define SECTOR_SIZE (SECTOR_DATA_SIZE + SECTOR_FOOTER_SIZE)
 
+#define SAVEBLOCK1_MAX_SIZE (SECTOR_DATA_SIZE * 4)
+#define SAVEBLOCK1_EXPECTED_SIZE 15720
+#define SAVEBLOCK1_ACTUAL_SIZE sizeof(struct SaveBlock1)
+
+STATIC_ASSERT(SAVEBLOCK1_ACTUAL_SIZE == SAVEBLOCK1_EXPECTED_SIZE, save_block_1_size);
+
 #define NUM_SAVE_SLOTS 2
 
 // If the sector's signature field is not this value then the sector is either invalid or empty.
