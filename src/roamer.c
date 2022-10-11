@@ -211,7 +211,7 @@ void CreateRoamerMonInstance(void)
     CreateMonWithIVsPersonality(mon, ROAMER->species, ROAMER->level, ROAMER->ivs, ROAMER->personality);
 // The roamer's status field is u8, but SetMonData expects status to be u32, so will set the roamer's status
 // using the status field and the following 3 bytes (cool, beauty, and cute).
-#ifdef BUGFIX
+#if defined(BUGFIX) || IV_BUGFIX == TRUE
     status = ROAMER->status;
     SetMonData(mon, MON_DATA_STATUS, &status);
 #else
