@@ -631,7 +631,7 @@ extern const u8 gText_MenuOption[];
 extern const u8 gText_MenuExit[];
 extern const u8 gText_MenuRetire[];
 extern const u8 gText_MenuDebug[];
-extern const u8 gText_MenuDebugBumpItem[];
+extern const u8 gText_MenuDebug_FeatureFlags[];
 extern const u8 gText_MenuSafariStats[];
 extern const u8 gStartMenuDesc_Pokedex[];
 extern const u8 gStartMenuDesc_Pokemon[];
@@ -921,6 +921,11 @@ extern const u8 gText_Rooftop2[];
 
 // option menu
 extern const u8 gText_TextSpeed[];
+extern const u8 gText_Debug_Flags[];
+extern const u8 gText_HideQuestLog[];
+extern const u8 gText_Evolution_Fix[];
+extern const u8 gText_IV_Fix[];
+extern const u8 gText_Builtin_EXP_Share[];
 extern const u8 gText_BattleScene[];
 extern const u8 gText_BattleStyle[];
 extern const u8 gText_Sound[];

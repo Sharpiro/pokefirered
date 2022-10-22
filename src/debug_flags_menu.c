@@ -17,7 +17,10 @@ bool32 MenuHelpers_CallLinkSomething(void);
 // Menu items
 enum
 {
-    MENUITEM_FIRSTFLAG,
+    MENUITEM_HIDE_QUEST_LOG,
+    MENUITEM_EVOLUTION_FIX,
+    MENUITEM_IV_FIX,
+    MENUITEM_BUILTIN_EXP_SHARE,
     MENUITEM_CANCEL,
     MENUITEM_COUNT
 };
@@ -118,41 +121,18 @@ static const u16 sOptionMenuItemCounts[MENUITEM_COUNT] = {};
 
 static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
     {
-        [MENUITEM_FIRSTFLAG] = gText_TextSpeed,
-        // [MENUITEM_BATTLESCENE] = gText_BattleScene,
-        // [MENUITEM_BATTLESTYLE] = gText_BattleStyle,
-        // [MENUITEM_SOUND] = gText_Sound,
-        // [MENUITEM_BUTTONMODE] = gText_ButtonMode,
-        // [MENUITEM_FRAMETYPE] = gText_Frame,
+        [MENUITEM_HIDE_QUEST_LOG] = gText_HideQuestLog,
+        [MENUITEM_EVOLUTION_FIX] = gText_Evolution_Fix,
+        [MENUITEM_IV_FIX] = gText_IV_Fix,
+        [MENUITEM_BUILTIN_EXP_SHARE] = gText_Builtin_EXP_Share,
         [MENUITEM_CANCEL] = gText_OptionMenuCancel,
 };
 
-static const u8 *const sTextSpeedOptions[] =
+static const u8 *const sOffOnOptions[] =
     {
-        gText_TextSpeedSlow,
-        gText_TextSpeedMid,
-        gText_TextSpeedFast};
-
-static const u8 *const sBattleSceneOptions[] =
-    {
+        gText_BattleSceneOff,
         gText_BattleSceneOn,
-        gText_BattleSceneOff};
-
-static const u8 *const sBattleStyleOptions[] =
-    {
-        gText_BattleStyleShift,
-        gText_BattleStyleSet};
-
-static const u8 *const sSoundOptions[] =
-    {
-        gText_SoundMono,
-        gText_SoundStereo};
-
-static const u8 *const sButtonTypeOptions[] =
-    {
-        gText_ButtonTypeHelp,
-        gText_ButtonTypeLR,
-        gText_ButtonTypeLEqualsA};
+};
 
 static const u8 sOptionMenuPickSwitchCancelTextColor[] = {TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY};
 static const u8 sOptionMenuTextColor[] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_LIGHT_RED, TEXT_COLOR_RED};
@@ -417,7 +397,7 @@ static u8 OptionMenu_ProcessInput(void)
     // }
     if (JOY_REPT(DPAD_UP))
     {
-        if (sOptionMenuPtr->cursorPos == MENUITEM_FIRSTFLAG)
+        if (sOptionMenuPtr->cursorPos == MENUITEM_HIDE_QUEST_LOG)
             sOptionMenuPtr->cursorPos = MENUITEM_CANCEL;
         else
             sOptionMenuPtr->cursorPos = sOptionMenuPtr->cursorPos - 1;
@@ -426,7 +406,7 @@ static u8 OptionMenu_ProcessInput(void)
     else if (JOY_REPT(DPAD_DOWN))
     {
         if (sOptionMenuPtr->cursorPos == MENUITEM_CANCEL)
-            sOptionMenuPtr->cursorPos = MENUITEM_FIRSTFLAG;
+            sOptionMenuPtr->cursorPos = MENUITEM_HIDE_QUEST_LOG;
         else
             sOptionMenuPtr->cursorPos = sOptionMenuPtr->cursorPos + 1;
         return 3;
@@ -455,29 +435,18 @@ static void BufferOptionMenuString(u8 selection)
 
     switch (selection)
     {
-        // case MENUITEM_TEXTSPEED:
-        //     AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, sTextSpeedOptions[sOptionMenuPtr->option[selection]]);
-        //     break;
-        // case MENUITEM_BATTLESCENE:
-        //     AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, sBattleSceneOptions[sOptionMenuPtr->option[selection]]);
-        //     break;
-        // case MENUITEM_BATTLESTYLE:
-        //     AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, sBattleStyleOptions[sOptionMenuPtr->option[selection]]);
-        //     break;
-        // case MENUITEM_SOUND:
-        //     AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, sSoundOptions[sOptionMenuPtr->option[selection]]);
-        //     break;
-        // case MENUITEM_BUTTONMODE:
-        //     AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, sButtonTypeOptions[sOptionMenuPtr->option[selection]]);
-        //     break;
-        // case MENUITEM_FRAMETYPE:
-        //     StringCopy(str, gText_FrameType);
-        //     ConvertIntToDecimalStringN(buf, sOptionMenuPtr->option[selection] + 1, 1, 2);
-        //     StringAppendN(str, buf, 3);
-        //     AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, str);
-        //     break;
-        // default:
-        //     break;
+    case MENUITEM_HIDE_QUEST_LOG:
+        AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, sOffOnOptions[HIDE_PREVIOUS_QUEST_LOG]);
+        break;
+    case MENUITEM_EVOLUTION_FIX:
+        AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, sOffOnOptions[FIX_POKEMON_EVOLUTIONS]);
+        break;
+    case MENUITEM_IV_FIX:
+        AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, sOffOnOptions[IV_BUGFIX]);
+        break;
+    case MENUITEM_BUILTIN_EXP_SHARE:
+        AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, sOffOnOptions[BUILTIN_EXP_SHARE]);
+        break;
     }
     PutWindowTilemap(1);
     CopyWindowToVram(1, COPYWIN_FULL);
@@ -488,12 +457,6 @@ static void CloseAndSaveOptionMenu(u8 taskId)
     gFieldCallback = FieldCB_DefaultWarpExit;
     SetMainCallback2(gMain.savedCallback);
     FreeAllWindowBuffers();
-    // gSaveBlock2Ptr->optionsTextSpeed = sOptionMenuPtr->option[MENUITEM_TEXTSPEED];
-    // gSaveBlock2Ptr->optionsBattleSceneOff = sOptionMenuPtr->option[MENUITEM_BATTLESCENE];
-    // gSaveBlock2Ptr->optionsBattleStyle = sOptionMenuPtr->option[MENUITEM_BATTLESTYLE];
-    // gSaveBlock2Ptr->optionsSound = sOptionMenuPtr->option[MENUITEM_SOUND];
-    // gSaveBlock2Ptr->optionsButtonMode = sOptionMenuPtr->option[MENUITEM_BUTTONMODE];
-    // gSaveBlock2Ptr->optionsWindowFrameType = sOptionMenuPtr->option[MENUITEM_FRAMETYPE];
     SetPokemonCryStereo(gSaveBlock2Ptr->optionsSound);
     FREE_AND_SET_NULL(sOptionMenuPtr);
     DestroyTask(taskId);
@@ -502,7 +465,7 @@ static void CloseAndSaveOptionMenu(u8 taskId)
 static void PrintOptionMenuHeader(void)
 {
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
-    AddTextPrinterParameterized(WIN_TEXT_OPTION, FONT_2, gText_Option, 8, 1, TEXT_SKIP_DRAW, NULL);
+    AddTextPrinterParameterized(WIN_TEXT_OPTION, FONT_2, gText_MenuDebug_FeatureFlags, 8, 1, TEXT_SKIP_DRAW, NULL);
     PutWindowTilemap(0);
     CopyWindowToVram(0, COPYWIN_FULL);
 }

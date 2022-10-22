@@ -58,7 +58,7 @@ enum StartMenuOption
     STARTMENU_RETIRE,
     STARTMENU_PLAYER2,
     STARTMENU_DEBUG,
-    STARTMENU_DEBUG_BUMP_ITEM,
+    STARTMENU_DEBUG_FEATURE_FLAGS,
     MAX_STARTMENU_ITEMS,
 };
 
@@ -91,7 +91,7 @@ static void StartMenu_FadeScreenIfLeavingOverworld(void);
 static bool8 StartMenuPokedexSanityCheck(void);
 static bool8 StartMenuPokedexCallback(void);
 static bool8 StartMenuDebugCallback(void);
-static bool8 StartMenuDebugBumpItemCallback(void);
+static bool8 StartMenuDebugFeatureFlagsCallback(void);
 static bool8 StartMenuPokemonCallback(void);
 static bool8 StartMenuBagCallback(void);
 static bool8 StartMenuPlayerCallback(void);
@@ -136,7 +136,7 @@ static const struct MenuAction sStartMenuActionTable[] = {
     {gText_MenuRetire, {.u8_void = StartMenuSafariZoneRetireCallback}},
     {gText_MenuPlayer, {.u8_void = StartMenuLinkPlayerCallback}},
     {gText_MenuDebug, {.u8_void = StartMenuDebugCallback}},
-    {gText_MenuDebugBumpItem, {.u8_void = StartMenuDebugBumpItemCallback}}};
+    {gText_MenuDebug_FeatureFlags, {.u8_void = StartMenuDebugFeatureFlagsCallback}}};
 
 static const struct WindowTemplate sSafariZoneStatsWindowTemplate = {
     .bg = 0,
@@ -159,7 +159,7 @@ static const u8 *const sStartMenuDescPointers[] = {
     gStartMenuDesc_Retire,
     gStartMenuDesc_Player,
     gStartMenuDesc_Debug,
-    gStartMenuDesc_DebugBumpItem,
+    gText_MenuDebug_FeatureFlags,
 };
 
 static const struct BgTemplate sBGTemplates_AfterLinkSaveMessage[] = {
@@ -242,8 +242,7 @@ static void SetUpStartMenu_NormalField(void)
 static void SetUpDebugMenu(void)
 {
     sNumStartMenuItems = 0;
-    AppendToStartMenuItems(STARTMENU_DEBUG_BUMP_ITEM);
-    AppendToStartMenuItems(STARTMENU_BAG);
+    AppendToStartMenuItems(STARTMENU_DEBUG_FEATURE_FLAGS);
 }
 
 static void SetUpStartMenu_SafariZone(void)
@@ -520,7 +519,7 @@ static bool8 StartMenuDebugCallback(void)
     return FALSE;
 }
 
-static bool8 StartMenuDebugBumpItemCallback(void)
+static bool8 StartMenuDebugFeatureFlagsCallback(void)
 {
     if (!gPaletteFade.active)
     {
