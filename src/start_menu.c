@@ -37,6 +37,14 @@
 #include "constants/songs.h"
 #include "constants/field_weather.h"
 
+// #include "script_pokemon_util.h"
+// #include "items.h"
+#include "constants/items.h"
+// ANNOYING:
+// #include "include/item.h";
+#include "item.h"
+// #include "items.h";
+
 enum StartMenuOption
 {
     STARTMENU_POKEDEX = 0,
@@ -49,6 +57,7 @@ enum StartMenuOption
     STARTMENU_RETIRE,
     STARTMENU_PLAYER2,
     STARTMENU_DEBUG,
+    STARTMENU_DEBUG_BUMP_ITEM,
     MAX_STARTMENU_ITEMS,
 };
 
@@ -81,6 +90,7 @@ static void StartMenu_FadeScreenIfLeavingOverworld(void);
 static bool8 StartMenuPokedexSanityCheck(void);
 static bool8 StartMenuPokedexCallback(void);
 static bool8 StartMenuDebugCallback(void);
+static bool8 StartMenuDebugBumpItemCallback(void);
 static bool8 StartMenuPokemonCallback(void);
 static bool8 StartMenuBagCallback(void);
 static bool8 StartMenuPlayerCallback(void);
@@ -124,7 +134,8 @@ static const struct MenuAction sStartMenuActionTable[] = {
     {gText_MenuExit, {.u8_void = StartMenuExitCallback}},
     {gText_MenuRetire, {.u8_void = StartMenuSafariZoneRetireCallback}},
     {gText_MenuPlayer, {.u8_void = StartMenuLinkPlayerCallback}},
-    {gText_MenuDebug, {.u8_void = StartMenuDebugCallback}}};
+    {gText_MenuDebug, {.u8_void = StartMenuDebugCallback}},
+    {gText_MenuDebugBumpItem, {.u8_void = StartMenuDebugBumpItemCallback}}};
 
 static const struct WindowTemplate sSafariZoneStatsWindowTemplate = {
     .bg = 0,
@@ -146,7 +157,8 @@ static const u8 *const sStartMenuDescPointers[] = {
     gStartMenuDesc_Exit,
     gStartMenuDesc_Retire,
     gStartMenuDesc_Player,
-    gStartMenuDesc_Debug
+    gStartMenuDesc_Debug,
+    gStartMenuDesc_DebugBumpItem,
 };
 
 static const struct BgTemplate sBGTemplates_AfterLinkSaveMessage[] = {
@@ -230,7 +242,7 @@ static void SetUpDebugMenu(void)
 {
     sNumStartMenuItems = 0;
     AppendToStartMenuItems(STARTMENU_BAG);
-    AppendToStartMenuItems(STARTMENU_OPTION);
+    AppendToStartMenuItems(STARTMENU_DEBUG_BUMP_ITEM);
 }
 
 static void SetUpStartMenu_SafariZone(void)
@@ -501,6 +513,42 @@ static bool8 StartMenuDebugCallback(void)
         PlayRainStoppingSoundEffect();
         DestroySafariZoneStatsWindow();
         CleanupOverworldWindowsAndTilemaps();
+        SetMainCallback2(CB2_ReturnToFieldWithOpenDebugMenu);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static bool8 StartMenuDebugBumpItemCallback(void)
+{
+    if (!gPaletteFade.active)
+    {
+        // char new_name[] = _("bruh");
+        // char test_b = new_name[0];
+        // char ascii_b = 'b';
+        // gSaveBlock2Ptr->playerName[0] = new_name[0];
+        // gSaveBlock2Ptr->playerName[1] = new_name[1];
+        // gSaveBlock2Ptr->playerName[2] = new_name[2];
+        // gSaveBlock2Ptr->playerName[3] = new_name[3];
+        // gSaveBlock2Ptr->playerName[4] = 0xff;
+        // DexScreen_GetSetPokedexFlag(SPECIES_MEW, FLAG_SET_SEEN, TRUE);
+        // ScriptGiveMon(SPECIES_MEWTWO, 5, 0, 0, 0, 0);
+
+        //         #define ITEM_MASTER_BALL 1
+        // #define ITEM_ULTRA_BALL 2
+        // #define ITEM_GREAT_BALL 3
+        // #define ITEM_POKE_BALL 4
+        // #define ITEM_SAFARI_BALL 5
+        // #define ITEM_NET_BALL 6
+        // #define ITEM_DIVE_BALL 7
+        // #define ITEM_NEST_BALL 8
+        // #define ITEM_REPEAT_BALL 9
+        // #define ITEM_TIMER_BALL 10
+        // #define ITEM_LUXURY_BALL 11
+        // #define ITEM_PREMIER_BALL 12
+        // #define ITEM_POTION 13
+        // AddBagItem(ITEM_POTION, 1);
+        // AddBagItem(ITEM_MASTER_BALL, 1);
         SetMainCallback2(CB2_ReturnToFieldWithOpenDebugMenu);
         return TRUE;
     }
