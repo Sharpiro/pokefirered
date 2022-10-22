@@ -36,6 +36,7 @@
 #include "help_system.h"
 #include "constants/songs.h"
 #include "constants/field_weather.h"
+#include "debug_flags_menu.h"
 
 // #include "script_pokemon_util.h"
 // #include "items.h"
@@ -241,8 +242,8 @@ static void SetUpStartMenu_NormalField(void)
 static void SetUpDebugMenu(void)
 {
     sNumStartMenuItems = 0;
-    AppendToStartMenuItems(STARTMENU_BAG);
     AppendToStartMenuItems(STARTMENU_DEBUG_BUMP_ITEM);
+    AppendToStartMenuItems(STARTMENU_BAG);
 }
 
 static void SetUpStartMenu_SafariZone(void)
@@ -549,7 +550,15 @@ static bool8 StartMenuDebugBumpItemCallback(void)
         // #define ITEM_POTION 13
         // AddBagItem(ITEM_POTION, 1);
         // AddBagItem(ITEM_MASTER_BALL, 1);
-        SetMainCallback2(CB2_ReturnToFieldWithOpenDebugMenu);
+        // SetMainCallback2(CB2_ReturnToFieldWithOpenDebugMenu);
+        // return TRUE;
+
+        // options
+        PlayRainStoppingSoundEffect();
+        DestroySafariZoneStatsWindow();
+        CleanupOverworldWindowsAndTilemaps();
+        SetMainCallback2(CB2_DebugOptionsMenuFromStartMenu);
+        gMain.savedCallback = CB2_ReturnToFieldWithOpenDebugMenu;
         return TRUE;
     }
     return FALSE;

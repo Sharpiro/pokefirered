@@ -37,6 +37,7 @@
 	.include "src/field_effect.o"
 	.include "src/scanline_effect.o"
 	.include "src/option_menu.o"
+	.include "src/debug_flags_menu.o"
 	.include "src/trainer_card.o"
 	.include "src/pokemon_storage_system_menu.o"
 	.include "src/pokemon_storage_system_tasks.o"
