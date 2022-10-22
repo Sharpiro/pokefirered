@@ -80,6 +80,7 @@ static bool8 StartCB_HandleInput(void);
 static void StartMenu_FadeScreenIfLeavingOverworld(void);
 static bool8 StartMenuPokedexSanityCheck(void);
 static bool8 StartMenuPokedexCallback(void);
+static bool8 StartMenuDebugCallback(void);
 static bool8 StartMenuPokemonCallback(void);
 static bool8 StartMenuBagCallback(void);
 static bool8 StartMenuPlayerCallback(void);
@@ -114,17 +115,16 @@ static void CloseSaveStatsWindow(void);
 static void CloseStartMenu(void);
 
 static const struct MenuAction sStartMenuActionTable[] = {
-    { gText_MenuPokedex, {.u8_void = StartMenuPokedexCallback} },
-    { gText_MenuPokemon, {.u8_void = StartMenuPokemonCallback} },
-    { gText_MenuBag, {.u8_void = StartMenuBagCallback} },
-    { gText_MenuPlayer, {.u8_void = StartMenuPlayerCallback} },
-    { gText_MenuSave, {.u8_void = StartMenuSaveCallback} },
-    { gText_MenuOption, {.u8_void = StartMenuOptionCallback} },
-    { gText_MenuExit, {.u8_void = StartMenuExitCallback} },
-    { gText_MenuRetire, {.u8_void = StartMenuSafariZoneRetireCallback} },
-    { gText_MenuPlayer, {.u8_void = StartMenuLinkPlayerCallback} },
-    { gText_MenuDebug, {.u8_void = StartMenuPokedexCallback} }
-};
+    {gText_MenuPokedex, {.u8_void = StartMenuPokedexCallback}},
+    {gText_MenuPokemon, {.u8_void = StartMenuPokemonCallback}},
+    {gText_MenuBag, {.u8_void = StartMenuBagCallback}},
+    {gText_MenuPlayer, {.u8_void = StartMenuPlayerCallback}},
+    {gText_MenuSave, {.u8_void = StartMenuSaveCallback}},
+    {gText_MenuOption, {.u8_void = StartMenuOptionCallback}},
+    {gText_MenuExit, {.u8_void = StartMenuExitCallback}},
+    {gText_MenuRetire, {.u8_void = StartMenuSafariZoneRetireCallback}},
+    {gText_MenuPlayer, {.u8_void = StartMenuLinkPlayerCallback}},
+    {gText_MenuDebug, {.u8_void = StartMenuDebugCallback}}};
 
 static const struct WindowTemplate sSafariZoneStatsWindowTemplate = {
     .bg = 0,
@@ -221,9 +221,16 @@ static void SetUpStartMenu_NormalField(void)
     AppendToStartMenuItems(STARTMENU_BAG);
     AppendToStartMenuItems(STARTMENU_PLAYER);
     AppendToStartMenuItems(STARTMENU_SAVE);
-    // AppendToStartMenuItems(STARTMENU_OPTION);
-    AppendToStartMenuItems(STARTMENU_EXIT);
+    AppendToStartMenuItems(STARTMENU_OPTION);
+    // AppendToStartMenuItems(STARTMENU_EXIT);
     AppendToStartMenuItems(STARTMENU_DEBUG);
+}
+
+static void SetUpDebugMenu(void)
+{
+    sNumStartMenuItems = 0;
+    AppendToStartMenuItems(STARTMENU_BAG);
+    AppendToStartMenuItems(STARTMENU_OPTION);
 }
 
 static void SetUpStartMenu_SafariZone(void)
@@ -378,6 +385,14 @@ void SetUpReturnToStartMenu(void)
     gFieldCallback2 = FieldCB2_DrawStartMenu;
 }
 
+void SetUpReturnToDebugMenu(void)
+{
+    sDrawStartMenuState[0] = 2;
+    sDrawStartMenuState[1] = 0;
+    SetUpDebugMenu();
+    gFieldCallback2 = FieldCB2_DrawStartMenu;
+}
+
 void Task_StartMenuHandleInput(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
@@ -474,6 +489,19 @@ static bool8 StartMenuPokedexCallback(void)
         DestroySafariZoneStatsWindow();
         CleanupOverworldWindowsAndTilemaps();
         SetMainCallback2(CB2_OpenPokedexFromStartMenu);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static bool8 StartMenuDebugCallback(void)
+{
+    if (!gPaletteFade.active)
+    {
+        PlayRainStoppingSoundEffect();
+        DestroySafariZoneStatsWindow();
+        CleanupOverworldWindowsAndTilemaps();
+        SetMainCallback2(CB2_ReturnToFieldWithOpenDebugMenu);
         return TRUE;
     }
     return FALSE;

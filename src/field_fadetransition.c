@@ -498,6 +498,12 @@ bool8 FieldCB_ReturnToFieldOpenStartMenu(void)
     return FALSE;
 }
 
+bool8 FieldCB_ReturnToFieldOpenDebugMenu(void)
+{
+    SetUpReturnToDebugMenu();
+    return FALSE;
+}
+
 static void Task_SafariZoneRanOutOfBalls(u8 taskId)
 {
     if (FieldFadeTransitionBackgroundEffectIsFinished() == TRUE)

@@ -31,6 +31,7 @@ void DoUnionRoomWarp(void);
 void FieldCB_ReturnToFieldWirelessLink(void);
 void FieldCB_ReturnToFieldCableLink(void);
 bool8 FieldCB_ReturnToFieldOpenStartMenu(void);
+bool8 FieldCB_ReturnToFieldOpenDebugMenu(void);
 void FieldCB_ContinueScript(void);
 void FieldCB_ContinueScriptHandleMusic(void);
 void FieldCB_WarpExitFadeFromBlack(void);
