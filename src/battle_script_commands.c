@@ -3150,9 +3150,13 @@ static void Cmd_getexp(void)
             {
                 if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_HP) == 0)
                     continue;
+#if BUILTIN_EXP_SHARE
+                    viaSentIn++;
+                #else
                 currentPokemonSentIn = gBitTable[i] & sentIn;
                 if (currentPokemonSentIn)
                     viaSentIn++;
+#endif
 
                 item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
 
@@ -3161,16 +3165,18 @@ static void Cmd_getexp(void)
                 else
                     holdEffect = ItemId_GetHoldEffect(item);
 
-#if BUILTIN_EXP_SHARE
-                if (!(currentPokemonSentIn))
-#else
                 if (holdEffect == HOLD_EFFECT_EXP_SHARE)
-#endif
                     viaExpShare++;
             }
 
             calculatedExp = gSpeciesInfo[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level / 7;
 
+#if BUILTIN_EXP_SHARE
+            gExpShareExp = calculatedExp;
+            if (gExpShareExp == 0)
+                gExpShareExp = 1;
+            *exp = 0;
+#else
             if (viaExpShare) // at least one mon is getting exp via exp share
             {
                 *exp = SAFE_DIV(calculatedExp / 2, viaSentIn);
@@ -3188,6 +3194,7 @@ static void Cmd_getexp(void)
                     *exp = 1;
                 gExpShareExp = 0;
             }
+#endif
 
             gBattleScripting.getexpState++;
             gBattleStruct->expGetterMonId = 0;
@@ -3232,12 +3239,12 @@ static void Cmd_getexp(void)
 
                 if (GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_HP))
                 {
+#if BUILTIN_EXP_SHARE
+                    gBattleMoveDamage = gExpShareExp;
+#else
                     if (gBattleStruct->sentInPokes & 1)
                         gBattleMoveDamage = *exp;
                     else
-#if BUILTIN_EXP_SHARE
-                        gBattleMoveDamage += gExpShareExp;
-#else
                         gBattleMoveDamage = 0;
 
                     if (holdEffect == HOLD_EFFECT_EXP_SHARE)
