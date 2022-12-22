@@ -3240,6 +3240,7 @@ static void Cmd_getexp(void)
                 if (GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_HP))
                 {
 #if BUILTIN_EXP_SHARE
+                    // todo: if less than level cap
                     gBattleMoveDamage = gExpShareExp;
 #else
                     if (gBattleStruct->sentInPokes & 1)
@@ -9914,16 +9915,18 @@ static void Cmd_finishturn(void)
     gCurrentTurnActionNumber = gBattlersCount;
 }
 
-static void GetLevelCap()
+static u8 GetLevelCap()
 {
-    u8 levelCaps[8] = {14, 21, 24, 29, 43, 43, 47, 50};
-    u8 levelCap = levelCaps[0];
+    u8 levelCaps[] = {21, 24, 29, 43, 43, 47, 50, 63};
+    u8 levelCap = 14;
     for (int i = NUM_BADGES - 1; i >= 0; i--)
     {
         int hasBadge = FlagGet(FLAG_BADGE01_GET + i);
         if (hasBadge)
         {
             levelCap = levelCaps[i];
+            break;
         }
     }
+    return levelCap;
 }
