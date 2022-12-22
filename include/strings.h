@@ -632,6 +632,7 @@ extern const u8 gText_MenuExit[];
 extern const u8 gText_MenuRetire[];
 extern const u8 gText_MenuDebug[];
 extern const u8 gText_MenuDebug_FeatureFlags[];
+extern const u8 gText_BuildVersion[];
 extern const u8 gText_MenuSafariStats[];
 extern const u8 gStartMenuDesc_Pokedex[];
 extern const u8 gStartMenuDesc_Pokemon[];
