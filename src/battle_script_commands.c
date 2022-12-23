@@ -3240,8 +3240,16 @@ static void Cmd_getexp(void)
                 if (GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_HP))
                 {
 #if BUILTIN_EXP_SHARE
-                    // todo: if less than level cap
-                    gBattleMoveDamage = gExpShareExp;
+                    u32 monLevel = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL);
+                    u8 levelCap = GetLevelCap();
+                    if (monLevel < levelCap)
+                    {
+                        gBattleMoveDamage = gExpShareExp;
+                    }
+                    else
+                    {
+                        gBattleMoveDamage = 0;
+                    }
 #else
                     if (gBattleStruct->sentInPokes & 1)
                         gBattleMoveDamage = *exp;
@@ -3287,7 +3295,7 @@ static void Cmd_getexp(void)
                     PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gBattleStruct->expGetterBattlerId, gBattleStruct->expGetterMonId);
                     // buffer 'gained' or 'gained a boosted'
                     PREPARE_STRING_BUFFER(gBattleTextBuff2, i);
-                    PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 5, gBattleMoveDamage);
+                    PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 5, gExpShareExp);
 
 #if BUILTIN_EXP_SHARE
                     if (gBattleStruct->expGetterMonId == 0)
@@ -9915,11 +9923,19 @@ static void Cmd_finishturn(void)
     gCurrentTurnActionNumber = gBattlersCount;
 }
 
-static u8 GetLevelCap()
+u8 GetLevelCap(void)
 {
     u8 levelCaps[] = {21, 24, 29, 43, 43, 47, 50, 63};
     u8 levelCap = 14;
-    for (int i = NUM_BADGES - 1; i >= 0; i--)
+    int i;
+
+    int gameClear = FlagGet(FLAG_SYS_GAME_CLEAR);
+    if (gameClear)
+    {
+        return 75;
+    }
+
+    for (i = NUM_BADGES - 1; i >= 0; i--)
     {
         int hasBadge = FlagGet(FLAG_BADGE01_GET + i);
         if (hasBadge)

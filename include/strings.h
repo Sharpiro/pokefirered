@@ -96,6 +96,7 @@ extern const u8 gText_ThreeHyphens[];
 extern const u8 gText_SevenHyphens[];
 extern const u8 gText_NumberClear01[];
 extern const u8 gText_TimesStrVar1[];
+extern const u8 gText_LevelCap[];
 extern const u8 gText_IsSelected[];
 extern const u8 gText_ThereIsNoPokemon[];
 extern const u8 gText_ItemCantBeHeld[];
@@ -923,6 +924,7 @@ extern const u8 gText_Rooftop2[];
 // option menu
 extern const u8 gText_TextSpeed[];
 extern const u8 gText_Debug_Flags[];
+extern const u8 gText_LevelCapName[];
 extern const u8 gText_HideQuestLog[];
 extern const u8 gText_Evolution_Fix[];
 extern const u8 gText_IV_Fix[];

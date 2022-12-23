@@ -10,6 +10,7 @@
 #include "strings.h"
 #include "field_fadetransition.h"
 #include "gba/m4a_internal.h"
+#include "battle_controllers.h"
 
 // can't include the one in menu_helpers.h since Task_OptionMenu needs bool32 for matching
 bool32 MenuHelpers_CallLinkSomething(void);
@@ -17,6 +18,7 @@ bool32 MenuHelpers_CallLinkSomething(void);
 // Menu items
 enum
 {
+    MENUITEM_LEVEL_CAP,
     MENUITEM_HIDE_QUEST_LOG,
     MENUITEM_EVOLUTION_FIX,
     MENUITEM_IV_FIX,
@@ -121,6 +123,7 @@ static const u16 sOptionMenuItemCounts[MENUITEM_COUNT] = {};
 
 static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
     {
+        [MENUITEM_LEVEL_CAP] = gText_LevelCapName,
         [MENUITEM_HIDE_QUEST_LOG] = gText_HideQuestLog,
         [MENUITEM_EVOLUTION_FIX] = gText_Evolution_Fix,
         [MENUITEM_IV_FIX] = gText_IV_Fix,
@@ -397,7 +400,7 @@ static u8 OptionMenu_ProcessInput(void)
     // }
     if (JOY_REPT(DPAD_UP))
     {
-        if (sOptionMenuPtr->cursorPos == MENUITEM_HIDE_QUEST_LOG)
+        if (sOptionMenuPtr->cursorPos == 0)
             sOptionMenuPtr->cursorPos = MENUITEM_CANCEL;
         else
             sOptionMenuPtr->cursorPos = sOptionMenuPtr->cursorPos - 1;
@@ -406,7 +409,7 @@ static u8 OptionMenu_ProcessInput(void)
     else if (JOY_REPT(DPAD_DOWN))
     {
         if (sOptionMenuPtr->cursorPos == MENUITEM_CANCEL)
-            sOptionMenuPtr->cursorPos = MENUITEM_HIDE_QUEST_LOG;
+            sOptionMenuPtr->cursorPos = 0;
         else
             sOptionMenuPtr->cursorPos = sOptionMenuPtr->cursorPos + 1;
         return 3;
@@ -427,6 +430,7 @@ static void BufferOptionMenuString(u8 selection)
     u8 buf[12];
     u8 dst[3];
     u8 x, y;
+    u8 levelCap;
 
     memcpy(dst, sOptionMenuTextColor, 3);
     x = 0x82;
@@ -435,6 +439,12 @@ static void BufferOptionMenuString(u8 selection)
 
     switch (selection)
     {
+    case MENUITEM_LEVEL_CAP:
+        levelCap = GetLevelCap();
+        ConvertIntToDecimalStringN(gStringVar1, levelCap, STR_CONV_MODE_LEFT_ALIGN, 4);
+        StringExpandPlaceholders(gStringVar4, gText_LevelCap);
+        AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, gStringVar4);
+        break;
     case MENUITEM_HIDE_QUEST_LOG:
         AddTextPrinterParameterized3(1, FONT_2, x, y, dst, -1, sOffOnOptions[HIDE_PREVIOUS_QUEST_LOG]);
         break;
