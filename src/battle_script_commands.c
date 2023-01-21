@@ -3237,15 +3237,16 @@ static void Cmd_getexp(void)
                     {
                         f32 handle = 0.54;
                         gBattleMoveDamage = (calculatedExp / gPlayerPartyCount) * handle;
+                        gBattleMoveDamage = max(1, gBattleMoveDamage);
                         gExpShareExp = max(1, calculatedExp * .75);
                     }
                     else
                     {
                         f32 handle = 0.5556;
                         gBattleMoveDamage = (calculatedExp / gPlayerPartyCount) + (handle * gPlayerPartyCount);
-                        gExpShareExp = 0;
+                        gBattleMoveDamage = max(1, gBattleMoveDamage);
+                        gExpShareExp = gBattleMoveDamage;
                     }
-                    gBattleMoveDamage = max(1, calculatedExp);
 
                     if (holdEffect == HOLD_EFFECT_EXP_SHARE)
                     {
@@ -3303,9 +3304,19 @@ static void Cmd_getexp(void)
                     PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 5, gExpShareExp);
 
 #if BUILTIN_EXP_SHARE
-                    if (gBattleStruct->expGetterMonId == 0)
+                    if (viaExpShare)
                     {
-                        PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
+                        if (holdEffect == HOLD_EFFECT_EXP_SHARE)
+                        {
+                            PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
+                        }
+                    }
+                    else
+                    {
+                        if (gBattleStruct->expGetterMonId == 0)
+                        {
+                            PrepareStringBattle(STRINGID_PKMNPARTYGAINEDEXP, gBattleStruct->expGetterBattlerId);
+                        }
                     }
 #else
                     PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
