@@ -3165,12 +3165,6 @@ static void Cmd_getexp(void)
 
             calculatedExp = gSpeciesInfo[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level / 7;
 
-#if BUILTIN_EXP_SHARE
-            *exp = calculatedExp * .25;
-            if (*exp == 0)
-                *exp = 1;
-            gExpShareExp = *exp;
-#else
             if (viaExpShare) // at least one mon is getting exp via exp share
             {
                 *exp = SAFE_DIV(calculatedExp / 2, viaSentIn);
@@ -3188,7 +3182,6 @@ static void Cmd_getexp(void)
                     *exp = 1;
                 gExpShareExp = 0;
             }
-#endif
 
             gBattleScripting.getexpState++;
             gBattleStruct->expGetterMonId = 0;
@@ -3232,14 +3225,32 @@ static void Cmd_getexp(void)
                     gBattleStruct->wildVictorySong++;
                 }
 
+                // note: if not fainted
                 if (GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_HP))
                 {
 #if BUILTIN_EXP_SHARE
+                    u16 calculatedExp = gBaseStats[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level / 7;
                     u32 monLevel = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL);
                     u8 levelCap = GetLevelCap();
-                    gBattleMoveDamage = *exp;
+
+                    if (viaExpShare)
+                    {
+                        f32 handle = 0.54;
+                        gBattleMoveDamage = (calculatedExp / gPlayerPartyCount) * handle;
+                        gExpShareExp = max(1, calculatedExp * .75);
+                    }
+                    else
+                    {
+                        f32 handle = 0.5556;
+                        gBattleMoveDamage = (calculatedExp / gPlayerPartyCount) + (handle * gPlayerPartyCount);
+                        gExpShareExp = 0;
+                    }
+                    gBattleMoveDamage = max(1, calculatedExp);
+
                     if (holdEffect == HOLD_EFFECT_EXP_SHARE)
-                        gBattleMoveDamage += gExpShareExp;
+                    {
+                        gBattleMoveDamage = gExpShareExp;
+                    }
                     if (monLevel >= levelCap)
                     {
                         gBattleMoveDamage = 0;
