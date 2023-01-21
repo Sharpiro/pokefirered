@@ -3144,19 +3144,13 @@ static void Cmd_getexp(void)
         {
             u16 calculatedExp;
             s32 viaSentIn;
-            s32 currentPokemonSentIn;
 
             for (viaSentIn = 0, i = 0; i < PARTY_SIZE; i++)
             {
                 if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_HP) == 0)
                     continue;
-#if BUILTIN_EXP_SHARE
+                if (gBitTable[i] & sentIn)
                     viaSentIn++;
-                #else
-                currentPokemonSentIn = gBitTable[i] & sentIn;
-                if (currentPokemonSentIn)
-                    viaSentIn++;
-#endif
 
                 item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
 
@@ -3172,10 +3166,10 @@ static void Cmd_getexp(void)
             calculatedExp = gSpeciesInfo[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level / 7;
 
 #if BUILTIN_EXP_SHARE
-            gExpShareExp = calculatedExp;
-            if (gExpShareExp == 0)
-                gExpShareExp = 1;
-            *exp = 0;
+            *exp = calculatedExp * .25;
+            if (*exp == 0)
+                *exp = 1;
+            gExpShareExp = *exp;
 #else
             if (viaExpShare) // at least one mon is getting exp via exp share
             {
@@ -3214,6 +3208,7 @@ static void Cmd_getexp(void)
 #if BUILTIN_EXP_SHARE
             if (GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL) == MAX_LEVEL)
 #else
+            // note: if no exp share and not sent in, no exp
             if (holdEffect != HOLD_EFFECT_EXP_SHARE && !(gBattleStruct->sentInPokes & 1))
             {
                 *(&gBattleStruct->sentInPokes) >>= 1;
@@ -3242,11 +3237,10 @@ static void Cmd_getexp(void)
 #if BUILTIN_EXP_SHARE
                     u32 monLevel = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL);
                     u8 levelCap = GetLevelCap();
-                    if (monLevel < levelCap)
-                    {
-                        gBattleMoveDamage = gExpShareExp;
-                    }
-                    else
+                    gBattleMoveDamage = *exp;
+                    if (holdEffect == HOLD_EFFECT_EXP_SHARE)
+                        gBattleMoveDamage += gExpShareExp;
+                    if (monLevel >= levelCap)
                     {
                         gBattleMoveDamage = 0;
                     }
